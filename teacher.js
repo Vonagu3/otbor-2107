@@ -1,19 +1,19 @@
-/* Панель педагога: вход через Supabase Auth, просмотр ответов, автопроверка, экспорт. */
+/* Панель педагога: вход через Supabase Auth, коды участников, ответы, автопроверка, экспорт. */
 (function () {
   const CFG = window.OTBOR_CONFIG || {};
   const URL0 = (CFG.supabaseUrl || '').replace(/\/+$/, '');
   const ANON = CFG.supabaseAnonKey || '';
   const TABLE = CFG.table || 'answers';
-  const ORDER = {"опросник": ["fio", "klass", "exp_scratch", "exp_scratch_time", "exp_scratch_what", "exp_python", "exp_python_time", "exp_python_what", "exp_kotlin", "exp_kotlin_time", "exp_kotlin_what", "exp_other_name", "exp_other", "exp_other_time", "exp_other_what", "exp_tables", "exp_tables_time", "exp_tables_what", "exp_ai_user", "exp_ai_user_time", "exp_ai_user_what", "exp_ai_dev", "exp_ai_dev_time", "exp_ai_dev_what", "exp_arduino", "exp_arduino_time", "exp_arduino_what", "exp_design", "exp_design_time", "exp_design_what", "circles", "link", "self_code", "self_data", "self_speak", "self_design", "self_finish", "self_search", "rank_business", "rank_ai", "rank_data", "rank_research", "role_ideas", "role_maker", "role_coord", "role_research", "role_design", "role_speaker", "proud", "problem", "why", "stuck", "finish", "important", "hours", "trips", "other_activities", "pc_home"], "срез": ["fio", "klass", "A1a", "A1b", "A2a", "A2b", "A3a", "A3b", "A4a", "A4a_rule", "A4b", "A5a", "A5b", "A6a1", "A6a2", "A6b", "B1", "B2", "B3a", "B3b_prints", "B3b_fix", "C1", "C2a_client", "C2a_sum", "C2b", "C2c", "C3a", "C3b1", "C3b2", "C3c", "D1", "D2", "E", "F"]};
-  const LABELS = {"fio": "Фамилия, имя", "klass": "Класс", "exp_scratch": "Опыт: Scratch", "exp_scratch_time": "Scratch: сколько", "exp_scratch_what": "Scratch: что делал", "exp_python": "Опыт: Python", "exp_python_time": "Python: сколько", "exp_python_what": "Python: что делал", "exp_kotlin": "Опыт: Kotlin", "exp_kotlin_time": "Kotlin: сколько", "exp_kotlin_what": "Kotlin: что делал", "exp_other_name": "Другой язык: какой", "exp_other": "Опыт: другой язык", "exp_other_time": "Другой язык: сколько", "exp_other_what": "Другой язык: что делал", "exp_tables": "Опыт: таблицы", "exp_tables_time": "Таблицы: сколько", "exp_tables_what": "Таблицы: что делал", "exp_ai_user": "Опыт: нейросети как пользователь", "exp_ai_user_time": "Нейросети-пользователь: сколько", "exp_ai_user_what": "Нейросети-пользователь: что делал", "exp_ai_dev": "Опыт: обучал модель / pandas", "exp_ai_dev_time": "Модели/pandas: сколько", "exp_ai_dev_what": "Модели/pandas: что делал", "exp_arduino": "Опыт: Arduino/роботы", "exp_arduino_time": "Arduino: сколько", "exp_arduino_what": "Arduino: что делал", "exp_design": "Опыт: сайты/дизайн", "exp_design_time": "Дизайн: сколько", "exp_design_what": "Дизайн: что делал", "circles": "Кружки, курсы, олимпиады", "link": "Ссылка на работы", "self_code": "Самооценка: код", "self_data": "Самооценка: данные", "self_speak": "Самооценка: выступаю", "self_design": "Самооценка: красиво", "self_finish": "Самооценка: довожу до конца", "self_search": "Самооценка: ищу сам", "rank_business": "Место: приложения для бизнеса", "rank_ai": "Место: ИИ", "rank_data": "Место: анализ данных", "rank_research": "Место: проекты-исследования", "role_ideas": "Роль: генератор идей", "role_maker": "Роль: реализатор", "role_coord": "Роль: координатор", "role_research": "Роль: исследователь", "role_design": "Роль: оформитель", "role_speaker": "Роль: докладчик", "proud": "Проект, которым горжусь", "problem": "Какую проблему хочу решить", "why": "Зачем команда, цель на год", "stuck": "Если не получается", "finish": "Доделываю до конца", "important": "Важнее в команде", "hours": "Часов в неделю", "trips": "Готов к выездам", "other_activities": "Другие кружки и секции", "pc_home": "Компьютер дома", "A1a": "A1а", "A1b": "A1б", "A2a": "A2а: программа", "A2b": "A2б: другая программа?", "A3a": "A3а", "A3b": "A3б", "A4a": "A4а: число", "A4a_rule": "A4а: правило", "A4b": "A4б", "A5a": "A5а", "A5b": "A5б", "A6a1": "A6а: способ 1", "A6a2": "A6а: способ 2", "A6b": "A6б", "B1": "B1", "B2": "B2", "B3a": "B3а", "B3b_prints": "B3б: печатает", "B3b_fix": "B3б: исправление", "C1": "C1", "C2a_client": "C2а: клиент", "C2a_sum": "C2а: сумма", "C2b": "C2б", "C2c": "C2в", "C3a": "C3а: правило", "C3b1": "C3б: сообщение 1", "C3b2": "C3б: сообщение 2", "C3c": "C3в", "D1": "D1", "D2": "D2", "E": "E", "F": "F"};
+  const SITE = location.origin + location.pathname.replace(/[^/]*$/, '');
+  const ORDER = {"опросник": ["code", "klass", "exp_scratch", "exp_scratch_time", "exp_scratch_what", "exp_python", "exp_python_time", "exp_python_what", "exp_kotlin", "exp_kotlin_time", "exp_kotlin_what", "exp_other_name", "exp_other", "exp_other_time", "exp_other_what", "exp_tables", "exp_tables_time", "exp_tables_what", "exp_ai_user", "exp_ai_user_time", "exp_ai_user_what", "exp_ai_dev", "exp_ai_dev_time", "exp_ai_dev_what", "exp_arduino", "exp_arduino_time", "exp_arduino_what", "exp_design", "exp_design_time", "exp_design_what", "circles", "link", "self_code", "self_data", "self_speak", "self_design", "self_finish", "self_search", "rank_business", "rank_ai", "rank_data", "rank_research", "role_ideas", "role_maker", "role_coord", "role_research", "role_design", "role_speaker", "proud", "problem", "why", "stuck", "finish", "important", "hours", "trips", "other_activities", "pc_home"], "срез": ["code", "klass", "A1a", "A1b", "A2a", "A2b", "A3a", "A3b", "A4a", "A4a_rule", "A4b", "A5a", "A5b", "A6a1", "A6a2", "A6b", "B1", "B2", "B3a", "B3b_prints", "B3b_fix", "C1", "C2a_client", "C2a_sum", "C2b", "C2c", "C3a", "C3b1", "C3b2", "C3c", "D1", "D2", "E", "F"]};
+  const LABELS = {"code": "Код участника", "klass": "Класс", "exp_scratch": "Опыт: Scratch", "exp_scratch_time": "Scratch: сколько", "exp_scratch_what": "Scratch: что делал", "exp_python": "Опыт: Python", "exp_python_time": "Python: сколько", "exp_python_what": "Python: что делал", "exp_kotlin": "Опыт: Kotlin", "exp_kotlin_time": "Kotlin: сколько", "exp_kotlin_what": "Kotlin: что делал", "exp_other_name": "Другой язык: какой", "exp_other": "Опыт: другой язык", "exp_other_time": "Другой язык: сколько", "exp_other_what": "Другой язык: что делал", "exp_tables": "Опыт: таблицы", "exp_tables_time": "Таблицы: сколько", "exp_tables_what": "Таблицы: что делал", "exp_ai_user": "Опыт: нейросети как пользователь", "exp_ai_user_time": "Нейросети-пользователь: сколько", "exp_ai_user_what": "Нейросети-пользователь: что делал", "exp_ai_dev": "Опыт: обучал модель / pandas", "exp_ai_dev_time": "Модели/pandas: сколько", "exp_ai_dev_what": "Модели/pandas: что делал", "exp_arduino": "Опыт: Arduino/роботы", "exp_arduino_time": "Arduino: сколько", "exp_arduino_what": "Arduino: что делал", "exp_design": "Опыт: сайты/дизайн", "exp_design_time": "Дизайн: сколько", "exp_design_what": "Дизайн: что делал", "circles": "Кружки, курсы, олимпиады", "link": "Ссылка на работы", "self_code": "Самооценка: код", "self_data": "Самооценка: данные", "self_speak": "Самооценка: выступаю", "self_design": "Самооценка: красиво", "self_finish": "Самооценка: довожу до конца", "self_search": "Самооценка: ищу сам", "rank_business": "Место: приложения для бизнеса", "rank_ai": "Место: ИИ", "rank_data": "Место: анализ данных", "rank_research": "Место: проекты-исследования", "role_ideas": "Роль: генератор идей", "role_maker": "Роль: реализатор", "role_coord": "Роль: координатор", "role_research": "Роль: исследователь", "role_design": "Роль: оформитель", "role_speaker": "Роль: докладчик", "proud": "Проект, которым горжусь", "problem": "Какую проблему хочу решить", "why": "Зачем команда, цель на год", "stuck": "Если не получается", "finish": "Доделываю до конца", "important": "Важнее в команде", "hours": "Часов в неделю", "trips": "Готов к выездам", "other_activities": "Другие кружки и секции", "pc_home": "Компьютер дома", "A1a": "A1а", "A1b": "A1б", "A2a": "A2а: программа", "A2b": "A2б: другая программа?", "A3a": "A3а", "A3b": "A3б", "A4a": "A4а: число", "A4a_rule": "A4а: правило", "A4b": "A4б", "A5a": "A5а", "A5b": "A5б", "A6a1": "A6а: способ 1", "A6a2": "A6а: способ 2", "A6b": "A6б", "B1": "B1", "B2": "B2", "B3a": "B3а", "B3b_prints": "B3б: печатает", "B3b_fix": "B3б: исправление", "C1": "C1", "C2a_client": "C2а: клиент", "C2a_sum": "C2а: сумма", "C2b": "C2б", "C2c": "C2в", "C3a": "C3а: правило", "C3b1": "C3б: сообщение 1", "C3b2": "C3б: сообщение 2", "C3c": "C3в", "D1": "D1", "D2": "D2", "E": "E", "F": "F"};
   const $ = id => document.getElementById(id);
 
-  // ---------- сессия ----------
+  // ---------- сессия (только в пределах вкладки) ----------
   const SKEY = 'otbor2107_teacher_session';
   let session = null;
   try { session = JSON.parse(sessionStorage.getItem(SKEY) || 'null'); localStorage.removeItem(SKEY); } catch (e) {}
   function setSession(s) { session = s; try { s ? sessionStorage.setItem(SKEY, JSON.stringify(s)) : sessionStorage.removeItem(SKEY); } catch (e) {} }
-
   async function auth(path, body) {
     const r = await fetch(URL0 + '/auth/v1/' + path, { method: 'POST', headers: { apikey: ANON, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const j = await r.json().catch(() => ({}));
@@ -71,16 +71,18 @@
   }
 
   // ---------- данные ----------
-  let rows = [];
+  let rows = [], codes = [];
   let tab = 'срез';
   let showAll = false;
   let selectedId = null;
+  const fmt = t => { const d = new Date(t); return d.toLocaleDateString('ru-RU') + ' ' + d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }); };
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   async function load() {
     $('refresh').disabled = true;
     try {
-      const r = await rest(TABLE + '?select=*&order=created_at.desc&limit=5000');
-      rows = await r.json();
+      const [ra, rc] = await Promise.all([rest(TABLE + '?select=*&order=created_at.desc&limit=5000'), rest('codes?select=*&order=created_at.asc,code.asc&limit=5000')]);
+      rows = await ra.json(); codes = await rc.json();
       rows.forEach(x => { x.ts = x.updated_at || x.created_at; });
       $('status').textContent = 'Обновлено ' + new Date().toLocaleTimeString('ru-RU');
       render();
@@ -89,34 +91,30 @@
   }
   function visible() {
     let list = rows.filter(r => r.form === tab);
-    if (!showAll) {
-      const seen = new Set();
-      list = list.filter(r => { const k = norm(r.fio) + '|' + norm(r.klass); if (seen.has(k)) return false; seen.add(k); return true; });
-    }
+    if (!showAll) { const seen = new Set(); list = list.filter(r => { if (seen.has(r.code)) return false; seen.add(r.code); return true; }); }
     const q = norm($('search').value);
-    if (q) list = list.filter(r => norm(r.fio + ' ' + r.klass).includes(q));
+    if (q) list = list.filter(r => norm(r.code + ' ' + r.klass).includes(q));
     return list;
   }
-  const fmt = t => { const d = new Date(t); return d.toLocaleDateString('ru-RU') + ' ' + d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }); };
-  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-
   function render() {
+    const qSet = new Set(rows.filter(r => r.form === 'опросник').map(r => r.code));
+    const sSet = new Set(rows.filter(r => r.form === 'срез').map(r => r.code));
+    $('stat-codes').textContent = codes.length;
+    $('stat-q').textContent = qSet.size;
+    $('stat-s').textContent = sSet.size;
+    $('stat-both').textContent = [...qSet].filter(k => sSet.has(k)).length;
+    ['срез', 'опросник', 'коды'].forEach(t => $('tab-' + t).classList.toggle('active', tab === t));
+    $('answers-view').hidden = tab === 'коды';
+    $('codes-view').hidden = tab !== 'коды';
+    if (tab === 'коды') { renderCodes(qSet, sSet); return; }
     const list = visible();
-    const both = new Set(rows.filter(r => r.form === 'опросник').map(r => norm(r.fio) + '|' + norm(r.klass)));
-    const srezSet = new Set(rows.filter(r => r.form === 'срез').map(r => norm(r.fio) + '|' + norm(r.klass)));
-    $('stat-total').textContent = new Set(rows.map(r => norm(r.fio) + '|' + norm(r.klass))).size;
-    $('stat-q').textContent = both.size;
-    $('stat-s').textContent = srezSet.size;
-    $('stat-both').textContent = [...both].filter(k => srezSet.has(k)).length;
-    $('tab-срез').classList.toggle('active', tab === 'срез');
-    $('tab-опросник').classList.toggle('active', tab === 'опросник');
     const head = tab === 'срез'
-      ? '<th>Ученик</th><th>Класс</th><th>Отправлено</th><th class="c">Авто ✓ из 21</th><th class="c">Заполнено</th><th></th>'
-      : '<th>Ученик</th><th>Класс</th><th>Отправлено</th><th class="c">Часов</th><th class="c">Выезды</th><th class="c">Код</th><th class="c">Данные</th><th class="c">Выступаю</th><th>Роли</th><th>№1</th><th></th>';
+      ? '<th>Код</th><th>Класс</th><th>Отправлено</th><th class="c">Авто ✓ из 21</th><th class="c">Заполнено</th><th></th>'
+      : '<th>Код</th><th>Класс</th><th>Отправлено</th><th class="c">Часов</th><th class="c">Выезды</th><th class="c">Код</th><th class="c">Данные</th><th class="c">Выступаю</th><th>Роли</th><th>№1</th><th></th>';
     let html = '<tr>' + head + '</tr>';
     for (const r of list) {
       const d = r.data || {};
-      const filled = Object.keys(d).filter(k => k !== 'fio' && k !== 'klass' && d[k] !== '').length;
+      const filled = Object.keys(d).filter(k => k !== 'code' && k !== 'klass' && d[k] !== '').length;
       const total = ORDER[tab].length - 2;
       let cells;
       if (tab === 'срез') {
@@ -128,7 +126,8 @@
         const first = ['rank_business:бизнес', 'rank_ai:ИИ', 'rank_data:данные', 'rank_research:исследования'].filter(x => d[x.split(':')[0]] === '1').map(x => x.split(':')[1]).join('/');
         cells = `<td class="c">${esc(d.hours)}</td><td class="c">${esc(d.trips)}</td><td class="c">${esc(d.self_code)}</td><td class="c">${esc(d.self_data)}</td><td class="c">${esc(d.self_speak)}</td><td>${esc(roles)}</td><td>${esc(first)}</td>`;
       }
-      html += `<tr data-id="${r.id}" class="${r.id === selectedId ? 'sel' : ''}"><td><b>${esc(r.fio)}</b></td><td>${esc(r.klass)}</td><td class="muted">${fmt(r.ts)}${(r.submissions || 1) > 1 ? ' <span class="muted">×' + r.submissions + '</span>' : ''}</td>${cells}<td><button class="mini" data-del="${r.id}" title="Удалить запись">✕</button></td></tr>`;
+      const times = fmt(r.ts) + ((r.submissions || 1) > 1 ? ' <span class="muted">×' + r.submissions + '</span>' : '');
+      html += `<tr data-id="${r.id}" class="${r.id === selectedId ? 'sel' : ''}"><td><b class="mono">${esc(r.code)}</b></td><td>${esc(r.klass)}</td><td class="muted">${times}</td>${cells}<td><button class="mini" data-del="${r.id}" title="Удалить запись">✕</button></td></tr>`;
     }
     if (!list.length) html += '<tr><td colspan="11" class="muted">Пока нет ответов</td></tr>';
     $('grid').innerHTML = html;
@@ -136,7 +135,7 @@
     $('grid').querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async e => {
       e.stopPropagation();
       const r = rows.find(x => x.id === +b.dataset.del);
-      if (!confirm(`Удалить запись «${r.fio}» (${r.form}, ${fmt(r.ts)})? Это нельзя отменить.`)) return;
+      if (!confirm(`Удалить запись ${r.code} (${r.form}, ${fmt(r.ts)})? Это нельзя отменить.`)) return;
       try { await rest(TABLE + '?id=eq.' + r.id, { method: 'DELETE' }); rows = rows.filter(x => x.id !== r.id); if (selectedId === r.id) selectedId = null; render(); showDetail(); }
       catch (err) { alert('Не удалось удалить: ' + err.message); }
     }));
@@ -147,13 +146,11 @@
     if (!r) { box.hidden = true; return; }
     box.hidden = false;
     const d = r.data || {};
-    let h = `<div class="dhead"><div><b>${esc(r.fio)}</b> · ${esc(r.klass)} · ${r.form} · ${fmt(r.ts)}</div><button class="mini" id="close-detail">Закрыть</button></div>`;
-    if (r.form === 'срез') {
-      h += '<div class="checks">' + check(d).map(([k, ok]) => `<span class="${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'} ${esc(k)}</span>`).join('') + '</div>';
-    }
+    let h = `<div class="dhead"><div><b class="mono">${esc(r.code)}</b> · ${esc(r.klass)} · ${esc(r.form)} · ${fmt(r.ts)}</div><button class="mini" id="close-detail">Закрыть</button></div>`;
+    if (r.form === 'срез') h += '<div class="checks">' + check(d).map(([k, ok]) => `<span class="${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'} ${esc(k)}</span>`).join('') + '</div>';
     h += '<dl>';
     for (const k of ORDER[r.form]) {
-      if (k === 'fio' || k === 'klass') continue;
+      if (k === 'code' || k === 'klass') continue;
       const v = d[k];
       h += `<dt>${esc(LABELS[k] || k)}</dt><dd>${v ? esc(v) : '<span class="muted">—</span>'}</dd>`;
     }
@@ -163,17 +160,69 @@
     box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // ---------- экспорт ----------
+  // ---------- коды участников ----------
+  const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // без 0/O, 1/I
+  function makeCode() { const a = new Uint32Array(5); crypto.getRandomValues(a); return [...a].map(x => ALPHABET[x % ALPHABET.length]).join(''); }
+  function renderCodes(qSet, sSet) {
+    const q = norm($('search').value);
+    const list = codes.filter(c => !q || norm(c.code + ' ' + (c.klass || '')).includes(q));
+    let html = '<tr><th>Код</th><th>Класс</th><th class="c">Опросник</th><th class="c">Срез</th><th>Создан</th><th></th></tr>';
+    for (const c of list) {
+      html += `<tr><td><b class="mono">${esc(c.code)}</b></td><td>${esc(c.klass || '')}</td><td class="c">${qSet.has(c.code) ? '✓' : '<span class="muted">—</span>'}</td><td class="c">${sSet.has(c.code) ? '✓' : '<span class="muted">—</span>'}</td><td class="muted">${fmt(c.created_at)}</td><td><button class="mini" data-delcode="${esc(c.code)}" title="Удалить код">✕</button></td></tr>`;
+    }
+    if (!list.length) html += '<tr><td colspan="6" class="muted">Кодов пока нет. Сгенерируйте их выше.</td></tr>';
+    $('codes-grid').innerHTML = html;
+    $('codes-grid').querySelectorAll('[data-delcode]').forEach(b => b.addEventListener('click', async () => {
+      const code = b.dataset.delcode;
+      if (!confirm(`Удалить код ${code}? Ответы с этим кодом останутся, но новые отправки с ним не примутся.`)) return;
+      try { await rest('codes?code=eq.' + encodeURIComponent(code), { method: 'DELETE' }); codes = codes.filter(c => c.code !== code); render(); }
+      catch (err) { alert('Не удалось удалить: ' + err.message); }
+    }));
+  }
+  $('gen-btn').addEventListener('click', async () => {
+    const n = Math.max(1, Math.min(200, parseInt($('gen-count').value, 10) || 0));
+    const klass = $('gen-klass').value.trim();
+    const existing = new Set(codes.map(c => c.code));
+    const fresh = [];
+    while (fresh.length < n) { const c = makeCode(); if (!existing.has(c)) { existing.add(c); fresh.push({ code: c, klass: klass || null }); } }
+    $('gen-msg').textContent = 'Сохраняем…';
+    try {
+      await rest('codes', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify(fresh) });
+      $('gen-msg').textContent = 'Создано кодов: ' + n + (klass ? ' для класса ' + klass : '') + '.';
+      await load();
+    } catch (err) { $('gen-msg').textContent = 'Ошибка: ' + err.message; }
+  });
+  $('codes-csv').addEventListener('click', () => {
+    const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const lines = [['код', 'класс', 'фамилия имя'].map(q).join(';')].concat(codes.map(c => [c.code, c.klass || '', ''].map(q).join(';')));
+    const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'коды_имена.csv'; document.body.appendChild(a); a.click(); a.remove();
+  });
+  $('codes-print').addEventListener('click', () => {
+    const q = norm($('search').value);
+    const list = codes.filter(c => !q || norm(c.code + ' ' + (c.klass || '')).includes(q));
+    const w = window.open('', '_blank');
+    const slip = c => `<div class="slip"><div class="l">Код участника${c.klass ? ' · ' + esc(c.klass) : ''}</div><div class="c">${esc(c.code)}</div><div class="s">${esc(SITE.replace(/^https?:\/\//, ''))}</div></div>`;
+    w.document.write(`<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Коды участников</title><style>
+      body{font-family:-apple-system,Segoe UI,Arial,sans-serif;margin:10mm}
+      .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6mm}
+      .slip{border:1px dashed #888;border-radius:4mm;padding:5mm;text-align:center;page-break-inside:avoid}
+      .l{font-size:10pt;color:#555}.c{font:bold 22pt Menlo,Consolas,monospace;letter-spacing:.15em;margin:2mm 0}.s{font-size:9pt;color:#555}
+      @media print{body{margin:6mm}}</style></head><body><div class="grid">${list.map(slip).join('')}</div><script>window.onload=()=>window.print()<\/script></body></html>`);
+    w.document.close();
+  });
+
+  // ---------- экспорт ответов ----------
   function csv(kind) {
     const list = rows.filter(r => r.form === kind);
     const seen = new Set(); const latest = [];
-    for (const r of list) { const k = norm(r.fio) + '|' + norm(r.klass); if (seen.has(k)) continue; seen.add(k); latest.push(r); }
-    const cols = ['fio', 'klass', '_отправлено', ...ORDER[kind].filter(k => k !== 'fio' && k !== 'klass')];
+    for (const r of list) { if (seen.has(r.code)) continue; seen.add(r.code); latest.push(r); }
+    const cols = ['code', 'klass', '_отправлено', ...ORDER[kind].filter(k => k !== 'code' && k !== 'klass')];
     const extra = kind === 'срез' ? check({}).map(x => 'авто: ' + x[0]).concat(['авто: верных из 21']) : [];
     const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
     const lines = [cols.concat(extra).map(q).join(';')];
     for (const r of latest) {
-      const d = Object.assign({}, r.data, { fio: r.fio, klass: r.klass, _отправлено: fmt(r.ts) });
+      const d = Object.assign({}, r.data, { code: r.code, klass: r.klass, _отправлено: fmt(r.ts) });
       const vals = cols.map(c => d[c]);
       if (kind === 'срез') { const ch = check(r.data || {}); vals.push(...ch.map(x => x[1] ? '✓' : '✗'), ch.filter(x => x[1]).length); }
       lines.push(vals.map(q).join(';'));
@@ -194,8 +243,7 @@
   $('refresh').addEventListener('click', load);
   $('search').addEventListener('input', render);
   $('showall').addEventListener('change', e => { showAll = e.target.checked; render(); });
-  $('tab-срез').addEventListener('click', () => { tab = 'срез'; selectedId = null; render(); showDetail(); });
-  $('tab-опросник').addEventListener('click', () => { tab = 'опросник'; selectedId = null; render(); showDetail(); });
+  ['срез', 'опросник', 'коды'].forEach(t => $('tab-' + t).addEventListener('click', () => { tab = t; selectedId = null; render(); showDetail(); }));
   $('csv-срез').addEventListener('click', () => csv('срез'));
   $('csv-опросник').addEventListener('click', () => csv('опросник'));
   setInterval(() => { if (!$('app').hidden && document.visibilityState === 'visible') load(); }, 30000);

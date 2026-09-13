@@ -43,13 +43,14 @@
   try {
     const st = JSON.parse(localStorage.getItem(SKEY) || 'null');
     if (st) {
-      if (!FORM.elements.fio.value && st.fio) FORM.elements.fio.value = st.fio;
+      if (!FORM.elements.code.value && st.code) FORM.elements.code.value = st.code;
       if (!FORM.elements.klass.value && st.klass) FORM.elements.klass.value = st.klass;
       autosave();
     }
   } catch (e) {}
-  ['fio', 'klass'].forEach(n => FORM.elements[n].addEventListener('input', () => {
-    try { localStorage.setItem(SKEY, JSON.stringify({ fio: FORM.elements.fio.value.trim(), klass: FORM.elements.klass.value.trim() })); } catch (e) {}
+  FORM.elements.code.addEventListener('input', () => { const el = FORM.elements.code; el.value = el.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
+  ['code', 'klass'].forEach(n => FORM.elements[n].addEventListener('input', () => {
+    try { localStorage.setItem(SKEY, JSON.stringify({ code: FORM.elements.code.value.trim(), klass: FORM.elements.klass.value.trim() })); } catch (e) {}
   }));
 
   function labelFor(name) {
@@ -81,8 +82,8 @@
 
   async function saveFile() {
     const data = fields();
-    if (!data.fio) { alert('Сначала впиши фамилию и имя вверху страницы.'); FORM.elements.fio.focus(); return; }
-    const fname = KIND + '_' + safeName(data.fio) + (data.klass ? '_' + safeName(data.klass) : '') + '.txt';
+    if (!data.code) { alert('Сначала впиши код участника вверху страницы.'); FORM.elements.code.focus(); return; }
+    const fname = KIND + '_' + safeName(data.code) + (data.klass ? '_' + safeName(data.klass) : '') + '.txt';
     const blob = new Blob([readable(data, true)], { type: 'text/plain;charset=utf-8' });
     try {
       if (window.showSaveFilePicker) {
@@ -99,7 +100,7 @@
 
   async function submit() {
     const data = fields();
-    if (!data.fio) { alert('Сначала впиши фамилию и имя вверху страницы.'); FORM.elements.fio.focus(); return; }
+    if (!data.code) { alert('Сначала впиши код участника вверху страницы.'); FORM.elements.code.focus(); return; }
     if (!ONLINE) { msg.textContent = 'Отправка в базу не настроена, сохраняем файлом.'; return saveFile(); }
     const btn = document.getElementById('submit-btn');
     btn.disabled = true; msg.textContent = 'Отправляем…';
@@ -109,16 +110,20 @@
       // Основной путь: функция submit_answer обновляет запись при повторной отправке.
       let res = await fetch(base + 'rpc/submit_answer', {
         method: 'POST', headers,
-        body: JSON.stringify({ p_form: KIND, p_fio: data.fio, p_klass: data.klass || '', p_client_id: clientId, p_data: data, p_text: readable(data, false) })
+        body: JSON.stringify({ p_form: KIND, p_code: data.code, p_klass: data.klass || '', p_client_id: clientId, p_data: data, p_text: readable(data, false) })
       });
       if (res.status === 404) {
         // Функция ещё не создана в базе: обычная вставка.
         res = await fetch(base + (CFG.table || 'answers'), {
           method: 'POST', headers,
-          body: JSON.stringify({ form: KIND, fio: data.fio, klass: data.klass || '', client_id: clientId, data: data, text: readable(data, false) })
+          body: JSON.stringify({ form: KIND, code: data.code, klass: data.klass || '', client_id: clientId, data: data, text: readable(data, false) })
         });
       }
-      if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + (await res.text()).slice(0, 200));
+      if (!res.ok) {
+        const body = await res.text();
+        if (body.includes('unknown code')) { msg.textContent = 'Код участника не найден. Проверь буквы и цифры или спроси учителя.'; FORM.elements.code.focus(); return; }
+        throw new Error('HTTP ' + res.status + ' ' + body.slice(0, 200));
+      }
       const t = new Date().toLocaleTimeString('ru-RU');
       msg.innerHTML = 'Ответы отправлены ✓ ' + t + '. Если что-то исправишь, отправь ещё раз: запись обновится.' + NEXT;
       try { localStorage.setItem(KEY + '_sent', t); } catch (e) {}
@@ -159,7 +164,7 @@
     msg.textContent = ''; if (mode) mode.textContent = ONLINE ? '' : 'Офлайн-режим: ответы сохраняются файлом';
     if (typeof progress === 'function') progress();
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    FORM.elements.fio.focus();
+    FORM.elements.code.focus();
   }
   document.getElementById('reset-btn').addEventListener('click', () => {
     if (confirm('Стереть ответы опросника и среза на этом компьютере и начать заново? Если ты уже нажимал «Отправить ответы», отправленное сохранится у учителя.')) resetForm();
@@ -177,7 +182,7 @@
   const counter = document.getElementById('counter');
   function progress() {
     const data = fields();
-    const names = Object.keys(data).filter(n => n !== 'fio' && n !== 'klass');
+    const names = Object.keys(data).filter(n => n !== 'code' && n !== 'klass');
     const done = names.filter(n => data[n] !== '').length;
     const pct = names.length ? Math.round(done / names.length * 100) : 0;
     if (bar) bar.style.width = pct + '%';

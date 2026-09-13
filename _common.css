@@ -355,3 +355,6 @@ input[type=checkbox], input[type=radio] { width: 20px; height: 20px; accent-colo
 
 .savebar button.ghost { border-color: transparent; background: transparent; color: var(--muted); }
 .savebar button.ghost:hover { color: #e11d48; border-color: #e11d48; background: var(--surface); }
+
+input.code { font-family: var(--mono); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; width: 150px; }
+.steps { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }

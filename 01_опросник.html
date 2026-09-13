@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<script src="_theme.js?v=20260913213316"></script>
-<link rel="stylesheet" href="_common.css?v=20260913213316">
+<script src="_theme.js?v=20260913215847"></script>
+<link rel="stylesheet" href="_common.css?v=20260913215847">
 </head>
 <body>
 <form data-form="опросник" onsubmit="return false">
@@ -19,11 +19,11 @@
 <h1>Опросник участника отбора в команды по программированию</h1>
 <p class="sub">Школа № 2107 · заполняется ~10 минут</p>
 <div class="chips"><span class="chip">≈ 10 минут</span><span class="chip">8 разделов</span><span class="chip">нет правильных ответов</span></div>
-<p class="note">Заполни честно: здесь нет правильных и неправильных ответов. Опросник нужен, чтобы понять, чем тебе интересно заниматься и как собрать команды. Черновик остаётся на этом компьютере, даже если страница случайно закроется. Но учителю ответы попадут только после кнопки <b>«Отправить ответы»</b> внизу страницы.</p>
+<p class="note">Заполни честно: здесь нет правильных и неправильных ответов. Опросник нужен, чтобы понять, чем тебе интересно заниматься и как собрать команды. Вместо фамилии используй <b>код участника</b>, который выдал учитель: в базе хранятся только коды, имена не пиши нигде. Черновик остаётся на этом компьютере, даже если страница случайно закроется. Но учителю ответы попадут только после кнопки <b>«Отправить ответы»</b> внизу страницы.</p>
 </div>
 <section class="block" id="blk-1" data-blk="1">
 <h2><span class="blk">1</span>О тебе</h2>
-<div class="row"><label>Фамилия, имя: <input type="text" class="mid" name="fio" data-label="Фамилия, имя" required></label>
+<div class="row"><label>Код участника: <input type="text" class="short code" name="code" data-label="Код участника" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="8" placeholder="K7X4M" required></label>
 <label>Класс: <input type="text" class="short" name="klass" data-label="Класс" placeholder="7Б"></label></div>
 </section>
 <section class="block" id="blk-2" data-blk="2">
@@ -136,7 +136,7 @@
 <div class="status"><span id="counter"></span><span id="saved-msg"></span><span id="mode" class="muted"></span></div>
 </div></div>
 </form>
-<script src="_config.js?v=20260913213316"></script>
-<script src="_common.js?v=20260913213316"></script>
+<script src="_config.js?v=20260913215847"></script>
+<script src="_common.js?v=20260913215847"></script>
 </body>
 </html>
