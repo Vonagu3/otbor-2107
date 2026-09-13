@@ -11,8 +11,8 @@
   // ---------- сессия ----------
   const SKEY = 'otbor2107_teacher_session';
   let session = null;
-  try { session = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) {}
-  function setSession(s) { session = s; try { s ? localStorage.setItem(SKEY, JSON.stringify(s)) : localStorage.removeItem(SKEY); } catch (e) {} }
+  try { session = JSON.parse(sessionStorage.getItem(SKEY) || 'null'); localStorage.removeItem(SKEY); } catch (e) {}
+  function setSession(s) { session = s; try { s ? sessionStorage.setItem(SKEY, JSON.stringify(s)) : sessionStorage.removeItem(SKEY); } catch (e) {} }
 
   async function auth(path, body) {
     const r = await fetch(URL0 + '/auth/v1/' + path, { method: 'POST', headers: { apikey: ANON, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -199,6 +199,9 @@
   $('csv-срез').addEventListener('click', () => csv('срез'));
   $('csv-опросник').addEventListener('click', () => csv('опросник'));
   setInterval(() => { if (!$('app').hidden && document.visibilityState === 'visible') load(); }, 30000);
+  let lastActive = Date.now();
+  ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(ev => document.addEventListener(ev, () => { lastActive = Date.now(); }, { passive: true }));
+  setInterval(() => { if (!$('app').hidden && Date.now() - lastActive > 30 * 60 * 1000) { setSession(null); showLogin('Вы вышли автоматически после 30 минут бездействия.'); } }, 60000);
 
   if (!URL0 || !ANON) showLogin('В _config.js не настроен Supabase.');
   else if (session) showApp(); else showLogin();

@@ -1,5 +1,7 @@
 /* Переключатель темы: light / dark / system. Подключается в <head>, чтобы не мигало при загрузке. */
 (function () {
+  // Всегда HTTPS: если страницу открыли по http, переходим на защищённую версию
+  if (location.protocol === 'http:' && !/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) { location.replace('https://' + location.host + location.pathname + location.search + location.hash); return; }
   const KEY = 'otbor2107_theme';
   const root = document.documentElement;
   function get() { try { return localStorage.getItem(KEY) || 'system'; } catch (e) { return 'system'; } }
