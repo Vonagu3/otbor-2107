@@ -12,6 +12,7 @@
 <body>
 <form data-form="срез" onsubmit="return false">
 <div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+<nav class="topbar"><a class="home" href="index.html">← Главная</a><span class="stepmark"><b>Шаг 2</b> из 2 · Срез</span><a class="next" href="01_опросник.html">← Шаг 1: опросник</a></nav>
 <div class="hero">
 <span class="eyebrow">Школа № 2107 · отбор в команды</span>
 <h1>Диагностический срез</h1>
@@ -19,7 +20,7 @@
 <div class="chips"><span class="chip">30–35 минут</span><span class="chip">6 блоков</span><span class="chip">ход мыслей важнее ответа</span></div>
 <div class="row"><label>Фамилия, имя: <input type="text" class="mid" name="fio" data-label="Фамилия, имя" required></label>
 <label>Класс: <input type="text" class="short" name="klass" data-label="Класс" placeholder="7Б"></label></div>
-<p class="note"><b>Как работать.</b> Задания разные: на логику, на алгоритмы, на данные, на идеи. Не обязательно решить всё. Если задание не получается, переходи к следующему и вернись позже. Пиши ход мыслей: он оценивается даже без правильного ответа. Задания со звёздочкой (<span class="star">★</span>) сложнее. Ответы сохраняются в браузере автоматически; в конце нажми <b>«Отправить ответы»</b>. Интернетом и чужой помощью не пользуемся.</p>
+<p class="note"><b>Как работать.</b> Задания разные: на логику, на алгоритмы, на данные, на идеи. Не обязательно решить всё. Если задание не получается, переходи к следующему и вернись позже. Пиши ход мыслей: он оценивается даже без правильного ответа. Задания со звёздочкой (<span class="star">★</span>) сложнее. Черновик остаётся на этом компьютере, даже если страница случайно закроется. Но учителю ответы попадут только после кнопки <b>«Отправить ответы»</b> внизу страницы. Интернетом и чужой помощью не пользуемся.</p>
 </div>
 <nav class="blocknav"><a href="#blk-A" data-blk="A">Блок A</a><a href="#blk-B" data-blk="B">Блок B</a><a href="#blk-C" data-blk="C">Блок C</a><a href="#blk-D" data-blk="D">Блок D</a><a href="#blk-E" data-blk="E">Блок E</a><a href="#blk-F" data-blk="F">Блок F</a></nav>
 <section class="block" id="blk-A" data-blk="A">
@@ -191,7 +192,7 @@ print(total)</pre>
 </ul>
 <div class="q"><div class="t">Ответы на вопросы из task.txt и исправленный код bug.py:</div><textarea name="F" class="mono big" data-label="F"></textarea></div>
 </section>
-<p class="footer">Спасибо за работу! Нажми «Отправить ответы».</p>
+<div class="nextcard"><div><b>Это был последний блок.</b><span>Нажми «Отправить ответы» внизу экрана. После отправки можно закрыть страницу.</span></div><a class="btn" href="index.html">На главную</a></div>
 <pre id="preview" hidden></pre>
 <div class="savebar"><div class="inner">
 <button type="button" id="submit-btn" class="primary">Отправить ответы</button>

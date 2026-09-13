@@ -59,6 +59,11 @@
   }
   function safeName(s) { return (s || 'без_имени').replace(/[^\p{L}\p{N}]+/gu, '_').replace(/^_+|_+$/g, ''); }
   const msg = document.getElementById('saved-msg');
+  const saveBtn = document.getElementById('save-btn');
+  if (ONLINE) saveBtn.hidden = true;   // показываем только в офлайн-режиме или после ошибки отправки
+  const NEXT = KIND === 'опросник'
+    ? ' <a href="02_срез.html">Перейти к шагу 2 →</a>'
+    : ' <a href="index.html">На главную</a>';
 
   async function saveFile() {
     const data = fields();
@@ -98,10 +103,11 @@
       });
       if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + (await res.text()).slice(0, 200));
       const t = new Date().toLocaleTimeString('ru-RU');
-      msg.textContent = 'Ответы отправлены ✓ ' + t + '. Если что-то исправишь, отправь ещё раз: учитель увидит последнюю версию.';
+      msg.innerHTML = 'Ответы отправлены ✓ ' + t + '. Если что-то исправишь, отправь ещё раз.' + NEXT;
       try { localStorage.setItem(KEY + '_sent', t); } catch (e) {}
     } catch (e) {
       msg.textContent = 'Не удалось отправить (' + e.message + '). Позови учителя. Пока сохраняем файлом.';
+      saveBtn.hidden = false;
       await saveFile();
     } finally { btn.disabled = false; }
   }

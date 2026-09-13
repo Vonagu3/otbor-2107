@@ -12,12 +12,13 @@
 <body>
 <form data-form="опросник" onsubmit="return false">
 <div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+<nav class="topbar"><a class="home" href="index.html">← Главная</a><span class="stepmark"><b>Шаг 1</b> из 2 · Опросник</span><a class="next" href="02_срез.html">Шаг 2: срез →</a></nav>
 <div class="hero">
 <span class="eyebrow">Школа № 2107 · отбор в команды</span>
 <h1>Опросник участника отбора в команды по программированию</h1>
 <p class="sub">Школа № 2107 · 7–8 классы · заполняется ~10 минут</p>
 <div class="chips"><span class="chip">≈ 10 минут</span><span class="chip">8 разделов</span><span class="chip">нет правильных ответов</span></div>
-<p class="note">Заполни честно: здесь нет правильных и неправильных ответов. Опросник нужен, чтобы понять, чем тебе интересно заниматься и как собрать команды. Ответы сохраняются в браузере автоматически; в конце нажми <b>«Отправить ответы»</b>.</p>
+<p class="note">Заполни честно: здесь нет правильных и неправильных ответов. Опросник нужен, чтобы понять, чем тебе интересно заниматься и как собрать команды. Черновик остаётся на этом компьютере, даже если страница случайно закроется. Но учителю ответы попадут только после кнопки <b>«Отправить ответы»</b> внизу страницы.</p>
 </div>
 <section class="block" id="blk-1" data-blk="1">
 <h2><span class="blk">1</span>О тебе</h2>
@@ -124,7 +125,7 @@
 <label><input type="radio" name="pc_home" value="нет"> нет</label>
 </div>
 </section>
-<p class="footer">Спасибо! Нажми «Отправить ответы» и переходи к <a href="02_срез.html">заданиям среза</a>.</p>
+<div class="nextcard"><div><b>Готово с опросником?</b><span>Сначала нажми «Отправить ответы» внизу экрана, потом переходи ко второму шагу.</span></div><a class="btn" href="02_срез.html">Шаг 2: диагностический срез →</a></div>
 <pre id="preview" hidden></pre>
 <div class="savebar"><div class="inner">
 <button type="button" id="submit-btn" class="primary">Отправить ответы</button>
