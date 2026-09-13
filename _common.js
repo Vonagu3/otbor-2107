@@ -38,6 +38,20 @@
   FORM.addEventListener('change', autosave);
   restore();
 
+  // Фамилия и класс общие для опросника и среза: ввёл один раз, подставилось везде
+  const SKEY = 'otbor2107_student';
+  try {
+    const st = JSON.parse(localStorage.getItem(SKEY) || 'null');
+    if (st) {
+      if (!FORM.elements.fio.value && st.fio) FORM.elements.fio.value = st.fio;
+      if (!FORM.elements.klass.value && st.klass) FORM.elements.klass.value = st.klass;
+      autosave();
+    }
+  } catch (e) {}
+  ['fio', 'klass'].forEach(n => FORM.elements[n].addEventListener('input', () => {
+    try { localStorage.setItem(SKEY, JSON.stringify({ fio: FORM.elements.fio.value.trim(), klass: FORM.elements.klass.value.trim() })); } catch (e) {}
+  }));
+
   function labelFor(name) {
     const el = FORM.elements[name];
     const one = el && el.length !== undefined && !el.tagName ? el[0] : el;
@@ -109,7 +123,7 @@
       msg.innerHTML = 'Ответы отправлены ✓ ' + t + '. Если что-то исправишь, отправь ещё раз: запись обновится.' + NEXT;
       try { localStorage.setItem(KEY + '_sent', t); } catch (e) {}
       msg.innerHTML += ' <button type="button" id="clear-after" class="mini">Очистить для следующего ученика</button>';
-      document.getElementById('clear-after').addEventListener('click', () => { if (confirm('Очистить форму? Отправленные ответы сохранены у учителя.')) resetForm(); });
+      document.getElementById('clear-after').addEventListener('click', () => { if (confirm('Очистить опросник и срез на этом компьютере? Отправленные ответы сохранены у учителя.')) resetForm(); });
     } catch (e) {
       msg.textContent = 'Не удалось отправить (' + e.message + '). Позови учителя. Пока сохраняем файлом.';
       saveBtn.hidden = false;
@@ -138,14 +152,17 @@
       if (!el.name) continue;
       if (el.type === 'checkbox' || el.type === 'radio') el.checked = false; else el.value = '';
     }
-    try { localStorage.removeItem(KEY); localStorage.removeItem(KEY + '_sent'); } catch (e) {}
+    try {
+      for (const k of ['otbor2107_опросник', 'otbor2107_срез']) { localStorage.removeItem(k); localStorage.removeItem(k + '_sent'); }
+      localStorage.removeItem(SKEY);
+    } catch (e) {}
     msg.textContent = ''; if (mode) mode.textContent = ONLINE ? '' : 'Офлайн-режим: ответы сохраняются файлом';
     if (typeof progress === 'function') progress();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     FORM.elements.fio.focus();
   }
   document.getElementById('reset-btn').addEventListener('click', () => {
-    if (confirm('Стереть все ответы на этой странице и начать заново? Если ты уже нажимал «Отправить ответы», отправленное сохранится у учителя.')) resetForm();
+    if (confirm('Стереть ответы опросника и среза на этом компьютере и начать заново? Если ты уже нажимал «Отправить ответы», отправленное сохранится у учителя.')) resetForm();
   });
   window.__otbor = { fields, readable, resetForm };
 
