@@ -4,19 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Опросник участника отбора в команды по программированию</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_common.css">
 </head>
 <body>
 <form data-form="опросник" onsubmit="return false">
+<div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+<div class="hero">
+<span class="eyebrow">Школа № 2107 · отбор в команды</span>
 <h1>Опросник участника отбора в команды по программированию</h1>
 <p class="sub">Школа № 2107 · 7–8 классы · заполняется ~10 минут</p>
+<div class="chips"><span class="chip">≈ 10 минут</span><span class="chip">8 разделов</span><span class="chip">нет правильных ответов</span></div>
 <p class="note">Заполни честно: здесь нет правильных и неправильных ответов. Опросник нужен, чтобы понять, чем тебе интересно заниматься и как собрать команды. Ответы сохраняются в браузере автоматически; в конце нажми <b>«Отправить ответы»</b>.</p>
-
-<h2>1. О тебе</h2>
+</div>
+<section class="block" id="blk-1" data-blk="1">
+<h2><span class="blk">1</span>О тебе</h2>
 <div class="row"><label>Фамилия, имя: <input type="text" class="mid" name="fio" data-label="Фамилия, имя" required></label>
 <label>Класс: <input type="text" class="short" name="klass" data-label="Класс" placeholder="7Б"></label></div>
-
-<h2>2. Опыт</h2>
+</section>
+<section class="block" id="blk-2" data-blk="2">
+<h2><span class="blk">2</span>Опыт</h2>
 <p><b>С чем ты уже работал(а)?</b> Отметь всё подходящее и напиши примерно, сколько времени занимаешься.</p>
 <table>
 <tr><th>Среда / язык</th><th class="c">Отметка</th><th>Сколько (месяцев / лет)</th><th>Что делал(а)? (1 фраза)</th></tr>
@@ -32,8 +41,9 @@
 </table>
 <div class="q"><div class="t"><b>Кружки, курсы, олимпиады, конкурсы</b> (что, где, когда, результат):</div><textarea name="circles" data-label="Кружки, курсы, олимпиады"></textarea></div>
 <div class="row"><label><b>Ссылка на твои работы</b> (GitHub, Scratch, сайт, папка), если есть: <input type="text" class="mid" name="link" data-label="Ссылка на работы"></label></div>
-
-<h2>3. Как ты сам(а) себя оцениваешь</h2>
+</section>
+<section class="block" id="blk-3" data-blk="3">
+<h2><span class="blk">3</span>Как ты сам(а) себя оцениваешь</h2>
 <p>Выбери цифру от 1 («совсем не про меня») до 5 («это точно я»).</p>
 <table class="scale">
 <tr><th>Утверждение</th><th class="c">1</th><th class="c">2</th><th class="c">3</th><th class="c">4</th><th class="c">5</th></tr>
@@ -44,8 +54,9 @@
 <tr><td>Я довожу начатое до конца, даже если стало скучно или сложно</td><td><input type="radio" name="self_finish" value="1" data-label="Самооценка: довожу до конца"></td><td><input type="radio" name="self_finish" value="2"></td><td><input type="radio" name="self_finish" value="3"></td><td><input type="radio" name="self_finish" value="4"></td><td><input type="radio" name="self_finish" value="5"></td></tr>
 <tr><td>Я умею сам(а) найти ответ в интернете или документации</td><td><input type="radio" name="self_search" value="1" data-label="Самооценка: ищу сам"></td><td><input type="radio" name="self_search" value="2"></td><td><input type="radio" name="self_search" value="3"></td><td><input type="radio" name="self_search" value="4"></td><td><input type="radio" name="self_search" value="5"></td></tr>
 </table>
-
-<h2>4. Что тебе интереснее</h2>
+</section>
+<section class="block" id="blk-4" data-blk="4">
+<h2><span class="blk">4</span>Что тебе интереснее</h2>
 <p>Расставь направления по порядку: 1 — самое интересное, 4 — наименее интересное. Каждое место используй один раз.</p>
 <table>
 <tr><th>Направление</th><th class="c">Место (1–4)</th></tr>
@@ -54,8 +65,9 @@
 <tr><td>Анализ данных: собирать, чистить, считать, строить графики, находить выводы</td><td class="c"><select name="rank_data" data-label="Место: анализ данных"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
 <tr><td>Проекты-исследования: придумать идею, проверить её, защитить перед жюри</td><td class="c"><select name="rank_research" data-label="Место: проекты-исследования"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
 </table>
-
-<h2>5. Роль в команде</h2>
+</section>
+<section class="block" id="blk-5" data-blk="5">
+<h2><span class="blk">5</span>Роль в команде</h2>
 <p>Выбери <b>две</b> роли, в которых тебе комфортнее всего:</p>
 <div class="opts" data-max="2">
 <label><input type="checkbox" name="role_ideas" data-label="Роль: генератор идей"> <b>Генератор идей</b> — придумываю, что делать и как</label>
@@ -65,13 +77,15 @@
 <label><input type="checkbox" name="role_design" data-label="Роль: оформитель"> <b>Оформитель</b> — делаю так, чтобы выглядело понятно и красиво</label>
 <label><input type="checkbox" name="role_speaker" data-label="Роль: докладчик"> <b>Докладчик</b> — рассказываю о результате, отвечаю на вопросы</label>
 </div>
-
-<h2>6. Расскажи</h2>
+</section>
+<section class="block" id="blk-6" data-blk="6">
+<h2><span class="blk">6</span>Расскажи</h2>
 <div class="q"><div class="t"><b>Проект, дело или задача, которыми ты гордишься</b> (не обязательно про программирование):</div><textarea name="proud" data-label="Проект, которым горжусь"></textarea></div>
 <div class="q"><div class="t"><b>Какую проблему в школе, районе или городе ты хотел(а) бы решить с помощью программы или данных?</b></div><textarea name="problem" data-label="Какую проблему хочу решить"></textarea></div>
 <div class="q"><div class="t"><b>Зачем тебе команда? Чего ты хочешь добиться за этот год?</b></div><textarea name="why" data-label="Зачем команда, цель на год"></textarea></div>
-
-<h2>7. Как ты работаешь</h2>
+</section>
+<section class="block" id="blk-7" data-blk="7">
+<h2><span class="blk">7</span>Как ты работаешь</h2>
 <p><b>Если задача не получается, я обычно…</b> (один вариант)</p>
 <div class="opts">
 <label><input type="radio" name="stuck" value="бросаю" data-label="Если не получается"> бросаю и переключаюсь на другое</label>
@@ -93,8 +107,9 @@
 <label><input type="radio" name="important" value="сделать полезную вещь"> сделать полезную вещь</label>
 <label><input type="radio" name="important" value="быть с друзьями"> быть с друзьями</label>
 </div>
-
-<h2>8. Время и возможности</h2>
+</section>
+<section class="block" id="blk-8" data-blk="8">
+<h2><span class="blk">8</span>Время и возможности</h2>
 <div class="row"><label>Сколько часов в неделю ты реально готов(а) уделять команде (кроме занятий в школе)? <input type="number" min="0" max="40" class="short" name="hours" data-label="Часов в неделю"> ч</label></div>
 <p><b>Готов(а) ли ты ездить на конференции и чемпионаты, в том числе по субботам?</b></p>
 <div class="opts inline">
@@ -108,15 +123,15 @@
 <label><input type="radio" name="pc_home" value="да" data-label="Компьютер дома"> да</label>
 <label><input type="radio" name="pc_home" value="нет"> нет</label>
 </div>
-
-<p>Спасибо! Нажми «Отправить ответы» и переходи к <a href="02_срез.html">заданиям среза</a>.</p>
+</section>
+<p class="footer">Спасибо! Нажми «Отправить ответы» и переходи к <a href="02_срез.html">заданиям среза</a>.</p>
 <pre id="preview" hidden></pre>
-<div class="savebar">
+<div class="savebar"><div class="inner">
 <button type="button" id="submit-btn" class="primary">Отправить ответы</button>
 <button type="button" id="save-btn">Сохранить файлом</button>
 <button type="button" id="preview-btn">Показать мои ответы</button>
-<span id="saved-msg"></span><span id="mode" class="muted"></span>
-</div>
+<div class="status"><span id="counter"></span><span id="saved-msg"></span><span id="mode" class="muted"></span></div>
+</div></div>
 </form>
 <script src="_config.js"></script>
 <script src="_common.js"></script>

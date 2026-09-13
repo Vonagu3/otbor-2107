@@ -4,17 +4,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Диагностический срез</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="_common.css">
 </head>
 <body>
 <form data-form="срез" onsubmit="return false">
+<div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+<div class="hero">
+<span class="eyebrow">Школа № 2107 · отбор в команды</span>
 <h1>Диагностический срез</h1>
 <p class="sub">Отбор в команды по программированию · 7–8 классы · 30–35 минут</p>
+<div class="chips"><span class="chip">30–35 минут</span><span class="chip">6 блоков</span><span class="chip">ход мыслей важнее ответа</span></div>
 <div class="row"><label>Фамилия, имя: <input type="text" class="mid" name="fio" data-label="Фамилия, имя" required></label>
 <label>Класс: <input type="text" class="short" name="klass" data-label="Класс" placeholder="7Б"></label></div>
 <p class="note"><b>Как работать.</b> Задания разные: на логику, на алгоритмы, на данные, на идеи. Не обязательно решить всё. Если задание не получается, переходи к следующему и вернись позже. Пиши ход мыслей: он оценивается даже без правильного ответа. Задания со звёздочкой (<span class="star">★</span>) сложнее. Ответы сохраняются в браузере автоматически; в конце нажми <b>«Отправить ответы»</b>. Интернетом и чужой помощью не пользуемся.</p>
-
-<h2>Блок A. Логика и алгоритмы</h2>
+</div>
+<nav class="blocknav"><a href="#blk-A" data-blk="A">Блок A</a><a href="#blk-B" data-blk="B">Блок B</a><a href="#blk-C" data-blk="C">Блок C</a><a href="#blk-D" data-blk="D">Блок D</a><a href="#blk-E" data-blk="E">Блок E</a><a href="#blk-F" data-blk="F">Блок F</a></nav>
+<section class="block" id="blk-A" data-blk="A">
+<h2><span class="blk">A</span>Логика и алгоритмы</h2>
 
 <h3>A1. Что выведет программа?</h3>
 <pre>s = 0
@@ -79,8 +88,9 @@ n = 1
 <div class="row"><label>а) Сколько страниц придётся открыть в худшем случае при способе 1? <input type="text" class="short" name="A6a1" data-label="A6а: способ 1"></label>
 <label>При способе 2 (примерно)? <input type="text" class="short" name="A6a2" data-label="A6а: способ 2"></label></div>
 <div class="q"><div class="t">б) Почему способ 2 не сработает, если слова в словаре перемешаны?</div><textarea name="A6b" data-label="A6б" style="min-height:60px"></textarea></div>
-
-<h2>Блок B. Напиши алгоритм</h2>
+</section>
+<section class="block" id="blk-B" data-blk="B">
+<h2><span class="blk">B</span>Напиши алгоритм</h2>
 <p>Пиши на любом языке программирования, который знаешь, <b>или</b> словами по шагам, как в A3. Главное, чтобы по твоей записи другой человек смог точно выполнить действия.</p>
 <h3>B1. Сколько раз буква встречается в слове?</h3>
 <p>Дано слово и буква. Например, слово «ПРОГРАММА», буква «А» → ответ 2.</p>
@@ -104,8 +114,9 @@ for i in range(1, 5):
 print(total)</pre>
 <div class="row"><label>Печатает: <input type="text" class="short" name="B3b_prints" data-label="B3б: печатает"></label>
 <label>Исправление: <input type="text" class="mid" name="B3b_fix" data-label="B3б: исправление"></label></div>
-
-<h2>Блок C. Данные</h2>
+</section>
+<section class="block" id="blk-C" data-blk="C">
+<h2><span class="blk">C</span>Данные</h2>
 <h3>C1. Из описания в таблицы</h3>
 <p>Школьный библиотекарь просит программу. Вот его слова:</p>
 <blockquote>«Мне нужно хранить книги: название, автор, год, сколько экземпляров есть. Хранить читателей: фамилия, имя, класс. И записывать, кто какую книгу взял, когда взял и до какого числа должен вернуть. Главное, чтобы я быстро видел, кто задерживает книги».</blockquote>
@@ -155,8 +166,9 @@ print(total)</pre>
 <tr><td>Кинь ссылку на презентацию по биологии, пожалуйста</td><td class="c"><select name="C3b2" data-label="C3б: сообщение 2"><option value=""></option><option>спам</option><option>не спам</option></select></td></tr>
 </table>
 <div class="row"><label>в) Придумай сообщение, на котором твоё правило ошибётся: <input type="text" name="C3c" data-label="C3в"></label></div>
-
-<h2>Блок D. Проект и исследование</h2>
+</section>
+<section class="block" id="blk-D" data-blk="D">
+<h2><span class="blk">D</span>Проект и исследование</h2>
 <h3>D1. Очередь в столовой</h3>
 <p>На большой перемене в школьной столовой очередь, и многие не успевают поесть. Предложи, как это можно улучшить с помощью программы, приложения или данных. Ответь по пунктам:</p>
 <ol><li>Что именно ты предлагаешь сделать?</li><li>Какие данные нужно собрать, чтобы понять причину очереди?</li><li>Как проверить через месяц, что стало лучше?</li></ol>
@@ -164,27 +176,29 @@ print(total)</pre>
 <h3>D2. Оцени</h3>
 <p>Сколько сообщений в день отправляют в чате твоего класса? Точного ответа никто не знает: важно, как ты рассуждаешь. Запиши, из чего складывается оценка, и итоговое число.</p>
 <textarea name="D2" data-label="D2"></textarea>
-
-<h2>Блок E. Интерфейс</h2>
+</section>
+<section class="block" id="blk-E" data-blk="E">
+<h2><span class="blk">E</span>Интерфейс</h2>
 <p>Придумай окно программы для библиотекаря из задания C1: форма «Выдать книгу» и рядом список выданных книг с должниками. Опиши окно текстом: какие поля, кнопки и списки есть и где они расположены (можно схематично, символами). Затем напиши <b>три</b> решения: почему элемент расположен именно так или почему он вообще нужен.</p>
 <textarea name="E" class="big" data-label="E"></textarea>
-
-<h2>Блок F (по желанию). На компьютере</h2>
+</section>
+<section class="block" id="blk-F" data-blk="F">
+<h2><span class="blk">F</span>На компьютере <span class="muted">(по желанию)</span></h2>
 <p>Если осталось время, скачай файлы и поработай с ними на компьютере:</p>
 <ul>
 <li><a href="practice/bug.py" download>bug.py</a> — программа с тремя ошибками. Запусти, найди и исправь их, чтобы она печатала правильный результат. Вставь исправленный код в поле ниже.</li>
 <li><a href="practice/orders.csv" download>orders.csv</a> и <a href="practice/task.txt" download>task.txt</a> — таблица заказов и два вопроса к ней. Ответить можно любым способом: Python, Excel, вручную.</li>
 </ul>
 <div class="q"><div class="t">Ответы на вопросы из task.txt и исправленный код bug.py:</div><textarea name="F" class="mono big" data-label="F"></textarea></div>
-
-<p>Спасибо за работу! Нажми «Отправить ответы».</p>
+</section>
+<p class="footer">Спасибо за работу! Нажми «Отправить ответы».</p>
 <pre id="preview" hidden></pre>
-<div class="savebar">
+<div class="savebar"><div class="inner">
 <button type="button" id="submit-btn" class="primary">Отправить ответы</button>
 <button type="button" id="save-btn">Сохранить файлом</button>
 <button type="button" id="preview-btn">Показать мои ответы</button>
-<span id="saved-msg"></span><span id="mode" class="muted"></span>
-</div>
+<div class="status"><span id="counter"></span><span id="saved-msg"></span><span id="mode" class="muted"></span></div>
+</div></div>
 </form>
 <script src="_config.js"></script>
 <script src="_common.js"></script>

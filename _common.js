@@ -120,6 +120,35 @@
   }
   window.__otbor = { fields, readable };
 
+  // Бейджи номеров заданий: «A1.» → <span class="qn">A1</span>
+  FORM.querySelectorAll('h3').forEach(h => {
+    const m = h.innerHTML.match(/^([A-F]\d)(\s*<span class="star">★<\/span>)?\.\s*/);
+    if (m) h.innerHTML = '<span class="qn">' + m[1] + '</span>' + (m[2] || '') + ' ' + h.innerHTML.slice(m[0].length);
+  });
+
+  // Прогресс: сколько вопросов заполнено
+  const bar = document.getElementById('progress-bar');
+  const counter = document.getElementById('counter');
+  function progress() {
+    const data = fields();
+    const names = Object.keys(data).filter(n => n !== 'fio' && n !== 'klass');
+    const done = names.filter(n => data[n] !== '').length;
+    const pct = names.length ? Math.round(done / names.length * 100) : 0;
+    if (bar) bar.style.width = pct + '%';
+    if (counter) counter.textContent = 'Заполнено ' + done + ' из ' + names.length;
+    FORM.querySelectorAll('.blocknav a[data-blk]').forEach(a => {
+      const sec = document.getElementById('blk-' + a.dataset.blk);
+      if (!sec) return;
+      const els = [...sec.querySelectorAll('[name]')];
+      const groups = new Set(els.map(e => e.name));
+      const filled = [...groups].filter(n => data[n] !== '').length;
+      a.classList.toggle('done', groups.size > 0 && filled === groups.size);
+    });
+  }
+  FORM.addEventListener('input', progress);
+  FORM.addEventListener('change', progress);
+  progress();
+
   FORM.querySelectorAll('[data-max]').forEach(group => {
     const max = +group.dataset.max;
     group.addEventListener('change', (e) => {
