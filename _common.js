@@ -114,11 +114,14 @@
 
   document.getElementById('submit-btn').addEventListener('click', submit);
   document.getElementById('save-btn').addEventListener('click', saveFile);
+  const modal = document.getElementById('preview-modal');
   document.getElementById('preview-btn').addEventListener('click', () => {
-    const pre = document.getElementById('preview');
-    pre.textContent = readable(fields(), false);
-    pre.hidden = !pre.hidden;
+    document.getElementById('preview').textContent = readable(fields(), false);
+    modal.hidden = false;
   });
+  document.getElementById('preview-close').addEventListener('click', () => { modal.hidden = true; });
+  modal.addEventListener('click', e => { if (e.target === modal) modal.hidden = true; });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.hidden = true; });
   const mode = document.getElementById('mode');
   if (mode) {
     let sent = ''; try { sent = localStorage.getItem(KEY + '_sent') || ''; } catch (e) {}
