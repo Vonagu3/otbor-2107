@@ -225,6 +225,22 @@
       await load();
     } catch (err) { $('gen-msg').textContent = 'Ошибка: ' + err.message; }
   });
+  async function deleteCodes(list, what) {
+    if (!list.length) { alert('Нечего удалять: ' + what + ' нет.'); return; }
+    if (!confirm(`Удалить ${what}: ${list.length} шт.? Ответы, отправленные с этими кодами, останутся в базе, но новые отправки с ними приниматься не будут.`)) return;
+    try {
+      for (let i = 0; i < list.length; i += 100) {
+        const chunk = list.slice(i, i + 100).map(c => encodeURIComponent(c)).join(',');
+        await rest('codes?code=in.(' + chunk + ')', { method: 'DELETE' });
+      }
+      await load();
+    } catch (err) { alert('Не удалось удалить: ' + err.message); }
+  }
+  $('codes-del-all').addEventListener('click', () => deleteCodes(codes.map(c => c.code), 'все коды'));
+  $('codes-del-unused').addEventListener('click', () => {
+    const used = new Set(rows.map(r => r.code));
+    deleteCodes(codes.filter(c => !used.has(c.code)).map(c => c.code), 'неиспользованные коды');
+  });
   $('codes-csv').addEventListener('click', () => {
     const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
     const lines = [['код', 'класс', 'фамилия имя'].map(q).join(';')].concat(codes.map(c => [c.code, c.klass || '', nameOf(c.code)].map(q).join(';')));
