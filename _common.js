@@ -108,6 +108,8 @@
       const t = new Date().toLocaleTimeString('ru-RU');
       msg.innerHTML = 'Ответы отправлены ✓ ' + t + '. Если что-то исправишь, отправь ещё раз: запись обновится.' + NEXT;
       try { localStorage.setItem(KEY + '_sent', t); } catch (e) {}
+      msg.innerHTML += ' <button type="button" id="clear-after" class="mini">Очистить для следующего ученика</button>';
+      document.getElementById('clear-after').addEventListener('click', () => { if (confirm('Очистить форму? Отправленные ответы сохранены у учителя.')) resetForm(); });
     } catch (e) {
       msg.textContent = 'Не удалось отправить (' + e.message + '). Позови учителя. Пока сохраняем файлом.';
       saveBtn.hidden = false;
@@ -130,7 +132,22 @@
     let sent = ''; try { sent = localStorage.getItem(KEY + '_sent') || ''; } catch (e) {}
     mode.textContent = ONLINE ? (sent ? 'Последняя отправка: ' + sent : '') : 'Офлайн-режим: ответы сохраняются файлом';
   }
-  window.__otbor = { fields, readable };
+  // «Начать заново»: очистить поля и черновик (для следующего ученика за этим же компьютером)
+  function resetForm() {
+    for (const el of FORM.elements) {
+      if (!el.name) continue;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = false; else el.value = '';
+    }
+    try { localStorage.removeItem(KEY); localStorage.removeItem(KEY + '_sent'); } catch (e) {}
+    msg.textContent = ''; if (mode) mode.textContent = ONLINE ? '' : 'Офлайн-режим: ответы сохраняются файлом';
+    if (typeof progress === 'function') progress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    FORM.elements.fio.focus();
+  }
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (confirm('Стереть все ответы на этой странице и начать заново? Если ты уже нажимал «Отправить ответы», отправленное сохранится у учителя.')) resetForm();
+  });
+  window.__otbor = { fields, readable, resetForm };
 
   // Бейджи номеров заданий: «A1.» → <span class="qn">A1</span>
   FORM.querySelectorAll('h3').forEach(h => {

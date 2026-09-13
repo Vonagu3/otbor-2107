@@ -352,3 +352,6 @@ input[type=checkbox], input[type=radio] { width: 20px; height: 20px; accent-colo
   border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   box-shadow: var(--shadow); cursor: pointer; display: grid; place-items: center; }
 .theme-btn:hover { border-color: var(--accent); }
+
+.savebar button.ghost { border-color: transparent; background: transparent; color: var(--muted); }
+.savebar button.ghost:hover { color: #e11d48; border-color: #e11d48; background: var(--surface); }
