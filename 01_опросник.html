@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Опросник участника отбора в команды по программированию</title>
+<link rel="stylesheet" href="_common.css">
+</head>
+<body>
+<form data-form="опросник" onsubmit="return false">
+<h1>Опросник участника отбора в команды по программированию</h1>
+<p class="sub">Школа № 2107 · 7–8 классы · заполняется ~10 минут</p>
+<p class="note">Заполни честно: здесь нет правильных и неправильных ответов. Опросник нужен, чтобы понять, чем тебе интересно заниматься и как собрать команды. Ответы сохраняются в браузере автоматически; в конце нажми <b>«Отправить ответы»</b>.</p>
+
+<h2>1. О тебе</h2>
+<div class="row"><label>Фамилия, имя: <input type="text" class="mid" name="fio" data-label="Фамилия, имя" required></label>
+<label>Класс: <input type="text" class="short" name="klass" data-label="Класс" placeholder="7Б"></label></div>
+<div class="row"><label>Телефон или почта родителя (для согласий на выездные мероприятия): <input type="text" class="mid" name="parent_contact" data-label="Контакт родителя"></label></div>
+<div class="row"><label>Твой телефон / Telegram (по желанию): <input type="text" class="mid" name="contact" data-label="Контакт ученика"></label></div>
+
+<h2>2. Опыт</h2>
+<p><b>С чем ты уже работал(а)?</b> Отметь всё подходящее и напиши примерно, сколько времени занимаешься.</p>
+<table>
+<tr><th>Среда / язык</th><th class="c">Отметка</th><th>Сколько (месяцев / лет)</th><th>Что делал(а)? (1 фраза)</th></tr>
+<tr><td>Scratch / другое блочное программирование</td><td class="c"><input type="checkbox" name="exp_scratch" data-label="Опыт: Scratch"></td><td><input type="text" name="exp_scratch_time" data-label="Scratch: сколько"></td><td><input type="text" name="exp_scratch_what" data-label="Scratch: что делал"></td></tr>
+<tr><td>Python</td><td class="c"><input type="checkbox" name="exp_python" data-label="Опыт: Python"></td><td><input type="text" name="exp_python_time" data-label="Python: сколько"></td><td><input type="text" name="exp_python_what" data-label="Python: что делал"></td></tr>
+<tr><td>Kotlin</td><td class="c"><input type="checkbox" name="exp_kotlin" data-label="Опыт: Kotlin"></td><td><input type="text" name="exp_kotlin_time" data-label="Kotlin: сколько"></td><td><input type="text" name="exp_kotlin_what" data-label="Kotlin: что делал"></td></tr>
+<tr><td>Другой язык: <input type="text" class="short" name="exp_other_name" data-label="Другой язык: какой"></td><td class="c"><input type="checkbox" name="exp_other" data-label="Опыт: другой язык"></td><td><input type="text" name="exp_other_time" data-label="Другой язык: сколько"></td><td><input type="text" name="exp_other_what" data-label="Другой язык: что делал"></td></tr>
+<tr><td>Excel / Google Таблицы (формулы, диаграммы)</td><td class="c"><input type="checkbox" name="exp_tables" data-label="Опыт: таблицы"></td><td><input type="text" name="exp_tables_time" data-label="Таблицы: сколько"></td><td><input type="text" name="exp_tables_what" data-label="Таблицы: что делал"></td></tr>
+<tr><td>Нейросети (ChatGPT, Midjourney и т. п.) как пользователь</td><td class="c"><input type="checkbox" name="exp_ai_user" data-label="Опыт: нейросети как пользователь"></td><td><input type="text" name="exp_ai_user_time" data-label="Нейросети-пользователь: сколько"></td><td><input type="text" name="exp_ai_user_what" data-label="Нейросети-пользователь: что делал"></td></tr>
+<tr><td>Сам(а) обучал(а) модель / писал(а) код с pandas, sklearn</td><td class="c"><input type="checkbox" name="exp_ai_dev" data-label="Опыт: обучал модель / pandas"></td><td><input type="text" name="exp_ai_dev_time" data-label="Модели/pandas: сколько"></td><td><input type="text" name="exp_ai_dev_what" data-label="Модели/pandas: что делал"></td></tr>
+<tr><td>Arduino / роботы / электроника</td><td class="c"><input type="checkbox" name="exp_arduino" data-label="Опыт: Arduino/роботы"></td><td><input type="text" name="exp_arduino_time" data-label="Arduino: сколько"></td><td><input type="text" name="exp_arduino_what" data-label="Arduino: что делал"></td></tr>
+<tr><td>Сайты, дизайн, Figma, презентации</td><td class="c"><input type="checkbox" name="exp_design" data-label="Опыт: сайты/дизайн"></td><td><input type="text" name="exp_design_time" data-label="Дизайн: сколько"></td><td><input type="text" name="exp_design_what" data-label="Дизайн: что делал"></td></tr>
+</table>
+<div class="q"><div class="t"><b>Кружки, курсы, олимпиады, конкурсы</b> (что, где, когда, результат):</div><textarea name="circles" data-label="Кружки, курсы, олимпиады"></textarea></div>
+<div class="row"><label><b>Ссылка на твои работы</b> (GitHub, Scratch, сайт, папка), если есть: <input type="text" class="mid" name="link" data-label="Ссылка на работы"></label></div>
+
+<h2>3. Как ты сам(а) себя оцениваешь</h2>
+<p>Выбери цифру от 1 («совсем не про меня») до 5 («это точно я»).</p>
+<table class="scale">
+<tr><th>Утверждение</th><th class="c">1</th><th class="c">2</th><th class="c">3</th><th class="c">4</th><th class="c">5</th></tr>
+<tr><td>Я пишу код и мне это нравится</td><td><input type="radio" name="self_code" value="1" data-label="Самооценка: код"></td><td><input type="radio" name="self_code" value="2"></td><td><input type="radio" name="self_code" value="3"></td><td><input type="radio" name="self_code" value="4"></td><td><input type="radio" name="self_code" value="5"></td></tr>
+<tr><td>Я люблю разбираться в данных, таблицах, искать закономерности</td><td><input type="radio" name="self_data" value="1" data-label="Самооценка: данные"></td><td><input type="radio" name="self_data" value="2"></td><td><input type="radio" name="self_data" value="3"></td><td><input type="radio" name="self_data" value="4"></td><td><input type="radio" name="self_data" value="5"></td></tr>
+<tr><td>Я умею объяснять и не боюсь выступать перед людьми</td><td><input type="radio" name="self_speak" value="1" data-label="Самооценка: выступаю"></td><td><input type="radio" name="self_speak" value="2"></td><td><input type="radio" name="self_speak" value="3"></td><td><input type="radio" name="self_speak" value="4"></td><td><input type="radio" name="self_speak" value="5"></td></tr>
+<tr><td>Я люблю делать красиво: рисовать, оформлять, продумывать интерфейс</td><td><input type="radio" name="self_design" value="1" data-label="Самооценка: красиво"></td><td><input type="radio" name="self_design" value="2"></td><td><input type="radio" name="self_design" value="3"></td><td><input type="radio" name="self_design" value="4"></td><td><input type="radio" name="self_design" value="5"></td></tr>
+<tr><td>Я довожу начатое до конца, даже если стало скучно или сложно</td><td><input type="radio" name="self_finish" value="1" data-label="Самооценка: довожу до конца"></td><td><input type="radio" name="self_finish" value="2"></td><td><input type="radio" name="self_finish" value="3"></td><td><input type="radio" name="self_finish" value="4"></td><td><input type="radio" name="self_finish" value="5"></td></tr>
+<tr><td>Я умею сам(а) найти ответ в интернете или документации</td><td><input type="radio" name="self_search" value="1" data-label="Самооценка: ищу сам"></td><td><input type="radio" name="self_search" value="2"></td><td><input type="radio" name="self_search" value="3"></td><td><input type="radio" name="self_search" value="4"></td><td><input type="radio" name="self_search" value="5"></td></tr>
+</table>
+
+<h2>4. Что тебе интереснее</h2>
+<p>Расставь направления по порядку: 1 — самое интересное, 4 — наименее интересное. Каждое место используй один раз.</p>
+<table>
+<tr><th>Направление</th><th class="c">Место (1–4)</th></tr>
+<tr><td>Приложения для бизнеса: базы данных, формы, учёт (как в реальных компаниях)</td><td class="c"><select name="rank_business" data-label="Место: приложения для бизнеса"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+<tr><td>Искусственный интеллект и нейросети: обучать модели, распознавать, предсказывать</td><td class="c"><select name="rank_ai" data-label="Место: ИИ"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+<tr><td>Анализ данных: собирать, чистить, считать, строить графики, находить выводы</td><td class="c"><select name="rank_data" data-label="Место: анализ данных"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+<tr><td>Проекты-исследования: придумать идею, проверить её, защитить перед жюри</td><td class="c"><select name="rank_research" data-label="Место: проекты-исследования"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option></select></td></tr>
+</table>
+
+<h2>5. Роль в команде</h2>
+<p>Выбери <b>две</b> роли, в которых тебе комфортнее всего:</p>
+<div class="opts" data-max="2">
+<label><input type="checkbox" name="role_ideas" data-label="Роль: генератор идей"> <b>Генератор идей</b> — придумываю, что делать и как</label>
+<label><input type="checkbox" name="role_maker" data-label="Роль: реализатор"> <b>Реализатор</b> — сажусь и делаю, пока не заработает</label>
+<label><input type="checkbox" name="role_coord" data-label="Роль: координатор"> <b>Координатор</b> — слежу, чтобы все всё успели, распределяю задачи</label>
+<label><input type="checkbox" name="role_research" data-label="Роль: исследователь"> <b>Исследователь</b> — ищу информацию, разбираюсь, как это устроено</label>
+<label><input type="checkbox" name="role_design" data-label="Роль: оформитель"> <b>Оформитель</b> — делаю так, чтобы выглядело понятно и красиво</label>
+<label><input type="checkbox" name="role_speaker" data-label="Роль: докладчик"> <b>Докладчик</b> — рассказываю о результате, отвечаю на вопросы</label>
+</div>
+
+<h2>6. Расскажи</h2>
+<div class="q"><div class="t"><b>Проект, дело или задача, которыми ты гордишься</b> (не обязательно про программирование):</div><textarea name="proud" data-label="Проект, которым горжусь"></textarea></div>
+<div class="q"><div class="t"><b>Какую проблему в школе, районе или городе ты хотел(а) бы решить с помощью программы или данных?</b></div><textarea name="problem" data-label="Какую проблему хочу решить"></textarea></div>
+<div class="q"><div class="t"><b>Зачем тебе команда? Чего ты хочешь добиться за этот год?</b></div><textarea name="why" data-label="Зачем команда, цель на год"></textarea></div>
+
+<h2>7. Как ты работаешь</h2>
+<p><b>Если задача не получается, я обычно…</b> (один вариант)</p>
+<div class="opts">
+<label><input type="radio" name="stuck" value="бросаю" data-label="Если не получается"> бросаю и переключаюсь на другое</label>
+<label><input type="radio" name="stuck" value="ищу решение"> ищу решение в интернете или спрашиваю у кого-то</label>
+<label><input type="radio" name="stuck" value="пробую варианты"> пробую разные варианты, пока не получится</label>
+<label><input type="radio" name="stuck" value="откладываю"> откладываю и возвращаюсь позже со свежей головой</label>
+</div>
+<p><b>Доделываю ли я проекты до конца?</b></p>
+<div class="opts inline">
+<label><input type="radio" name="finish" value="почти всегда" data-label="Доделываю до конца"> почти всегда</label>
+<label><input type="radio" name="finish" value="чаще да"> чаще да</label>
+<label><input type="radio" name="finish" value="чаще нет"> чаще нет</label>
+<label><input type="radio" name="finish" value="редко"> редко</label>
+</div>
+<p><b>Что для тебя важнее в команде?</b> (один вариант)</p>
+<div class="opts inline">
+<label><input type="radio" name="important" value="победить" data-label="Важнее в команде"> победить</label>
+<label><input type="radio" name="important" value="научиться новому"> научиться новому</label>
+<label><input type="radio" name="important" value="сделать полезную вещь"> сделать полезную вещь</label>
+<label><input type="radio" name="important" value="быть с друзьями"> быть с друзьями</label>
+</div>
+
+<h2>8. Время и возможности</h2>
+<div class="row"><label>Сколько часов в неделю ты реально готов(а) уделять команде (кроме занятий в школе)? <input type="number" min="0" max="40" class="short" name="hours" data-label="Часов в неделю"> ч</label></div>
+<p><b>Готов(а) ли ты ездить на конференции и чемпионаты, в том числе по субботам?</b></p>
+<div class="opts inline">
+<label><input type="radio" name="trips" value="да" data-label="Готов к выездам"> да</label>
+<label><input type="radio" name="trips" value="скорее да"> скорее да</label>
+<label><input type="radio" name="trips" value="нет"> нет</label>
+</div>
+<div class="q"><div class="t"><b>Другие кружки, секции, репетиторы</b> (чтобы учесть расписание):</div><textarea name="other_activities" data-label="Другие кружки и секции"></textarea></div>
+<p><b>Есть ли дома компьютер с интернетом, на котором можно программировать?</b></p>
+<div class="opts inline">
+<label><input type="radio" name="pc_home" value="да" data-label="Компьютер дома"> да</label>
+<label><input type="radio" name="pc_home" value="нет"> нет</label>
+</div>
+
+<p>Спасибо! Нажми «Отправить ответы» и переходи к <a href="02_срез.html">заданиям среза</a>.</p>
+<pre id="preview" hidden></pre>
+<div class="savebar">
+<button type="button" id="submit-btn" class="primary">Отправить ответы</button>
+<button type="button" id="save-btn">Сохранить файлом</button>
+<button type="button" id="preview-btn">Показать мои ответы</button>
+<span id="saved-msg"></span><span id="mode" class="muted"></span>
+</div>
+</form>
+<script src="_config.js"></script>
+<script src="_common.js"></script>
+</body>
+</html>

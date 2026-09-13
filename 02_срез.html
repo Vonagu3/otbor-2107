@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Диагностический срез</title>
+<link rel="stylesheet" href="_common.css">
+</head>
+<body>
+<form data-form="срез" onsubmit="return false">
+<h1>Диагностический срез</h1>
+<p class="sub">Отбор в команды по программированию · 7–8 классы · 30–35 минут</p>
+<div class="row"><label>Фамилия, имя: <input type="text" class="mid" name="fio" data-label="Фамилия, имя" required></label>
+<label>Класс: <input type="text" class="short" name="klass" data-label="Класс" placeholder="7Б"></label></div>
+<p class="note"><b>Как работать.</b> Задания разные: на логику, на алгоритмы, на данные, на идеи. Не обязательно решить всё. Если задание не получается, переходи к следующему и вернись позже. Пиши ход мыслей: он оценивается даже без правильного ответа. Задания со звёздочкой (<span class="star">★</span>) сложнее. Ответы сохраняются в браузере автоматически; в конце нажми <b>«Отправить ответы»</b>. Интернетом и чужой помощью не пользуемся.</p>
+
+<h2>Блок A. Логика и алгоритмы</h2>
+
+<h3>A1. Что выведет программа?</h3>
+<pre>s = 0
+n = 1
+ПОКА n ≤ 10:
+    ЕСЛИ n делится на 3 без остатка:
+        s = s + n
+    n = n + 1
+ВЫВЕСТИ s</pre>
+<div class="row"><label>а) Что будет выведено? <input type="text" class="short" name="A1a" data-label="A1а"></label></div>
+<div class="row"><label>б) Что будет выведено, если условие заменить на «n делится на 3 <b>или</b> на 5»? <input type="text" class="short" name="A1b" data-label="A1б"></label></div>
+
+<h3>A2. Робот</h3>
+<p>Робот стоит в клетке <b>R</b> и понимает четыре команды: <b>В</b> (шаг вверх), <b>Н</b> (вниз), <b>Л</b> (влево), <b>П</b> (вправо). Через клетки с <b>#</b> пройти нельзя. Нужно попасть в клетку с флагом <b>F</b>.</p>
+<pre>      1   2   3   4   5
+    +---+---+---+---+---+
+ 4  |   |   |   |   |   |
+    +---+---+---+---+---+
+ 3  |   | # |   | F |   |
+    +---+---+---+---+---+
+ 2  |   | # |   | # |   |
+    +---+---+---+---+---+
+ 1  | R |   |   |   |   |
+    +---+---+---+---+---+</pre>
+<div class="row"><label>а) Запиши самую короткую программу (последовательность букв): <input type="text" class="mid" name="A2a" data-label="A2а: программа"></label></div>
+<div class="q"><div class="t">б) Существует ли другая программа такой же длины, которая тоже приводит к флагу? Объясни в одну фразу.</div><textarea name="A2b" data-label="A2б: другая программа?" style="min-height:60px"></textarea></div>
+
+<h3>A3. Найди ошибку</h3>
+<p>Каждый алгоритм должен работать, но в нём есть ошибка. Найди её и напиши, как исправить.</p>
+<p><b>а)</b> <i>Найти самого высокого ученика в классе.</i></p>
+<ol>
+<li>Запомни рост первого ученика как «максимум».</li>
+<li>Для каждого следующего ученика: если его рост <b>меньше</b> максимума, запомни его рост как новый максимум.</li>
+<li>Когда ученики закончились, назови максимум.</li>
+</ol>
+<div class="row"><label>Ошибка и исправление: <input type="text" name="A3a" data-label="A3а"></label></div>
+<p><b>б)</b> <i>Напечатать все числа от 1 до 10.</i></p>
+<pre>n = 1
+ПОКА n &lt; 10:
+    ВЫВЕСТИ n
+    n = n + 1</pre>
+<div class="row"><label>Ошибка и исправление: <input type="text" name="A3b" data-label="A3б"></label></div>
+
+<h3>A4. Закономерности</h3>
+<div class="row"><label>а) Продолжи ряд: 2, 3, 5, 9, 17, <input type="text" class="short" name="A4a" data-label="A4а: число"></label>
+<label>Правило: <input type="text" class="mid" name="A4a_rule" data-label="A4а: правило"></label></div>
+<div class="row"><label>б) Слово зашифровали по правилу: каждая буква заменяется на другую, стоящую на несколько позиций дальше в алфавите (алфавит без буквы Ё). Известно: <b>КОТ → МРФ</b>. Расшифруй: <b>СТЛДЗФ →</b> <input type="text" class="short" name="A4b" data-label="A4б"></label></div>
+
+<h3>A5. Сортировка и отбор</h3>
+<p>Список учеников:</p>
+<table style="width:auto"><tr><th>Фамилия</th><th class="c">Класс</th></tr>
+<tr><td>Иванов</td><td class="c">8</td></tr><tr><td>Петрова</td><td class="c">7</td></tr><tr><td>Абрамов</td><td class="c">8</td></tr><tr><td>Яшина</td><td class="c">7</td></tr><tr><td>Ким</td><td class="c">8</td></tr></table>
+<div class="row"><label>а) Расставь их по правилу: сначала по классу по возрастанию, при одинаковом классе — по фамилии по алфавиту. Перечисли через запятую: <input type="text" name="A5a" data-label="A5а"></label></div>
+<div class="row"><label>б) Выпиши тех, у кого класс 8 <b>и</b> фамилия начинается с буквы от «А» до «К» включительно: <input type="text" class="mid" name="A5b" data-label="A5б"></label></div>
+
+<h3>A6 <span class="star">★</span>. Какой способ быстрее?</h3>
+<p>Ты ищешь слово в бумажном словаре на 1000 страниц. Слова в нём расположены по алфавиту.</p>
+<ul>
+<li><b>Способ 1:</b> листать с первой страницы по одной, пока не найдёшь.</li>
+<li><b>Способ 2:</b> открыть словарь посередине, посмотреть, раньше или позже по алфавиту нужное слово, и повторить то же самое с нужной половиной.</li>
+</ul>
+<div class="row"><label>а) Сколько страниц придётся открыть в худшем случае при способе 1? <input type="text" class="short" name="A6a1" data-label="A6а: способ 1"></label>
+<label>При способе 2 (примерно)? <input type="text" class="short" name="A6a2" data-label="A6а: способ 2"></label></div>
+<div class="q"><div class="t">б) Почему способ 2 не сработает, если слова в словаре перемешаны?</div><textarea name="A6b" data-label="A6б" style="min-height:60px"></textarea></div>
+
+<h2>Блок B. Напиши алгоритм</h2>
+<p>Пиши на любом языке программирования, который знаешь, <b>или</b> словами по шагам, как в A3. Главное, чтобы по твоей записи другой человек смог точно выполнить действия.</p>
+<h3>B1. Сколько раз буква встречается в слове?</h3>
+<p>Дано слово и буква. Например, слово «ПРОГРАММА», буква «А» → ответ 2.</p>
+<textarea name="B1" class="mono" data-label="B1"></textarea>
+<h3>B2. Второе по величине число</h3>
+<p>Дан список чисел, например: 4, 9, 1, 9, 7. Нужно найти <b>второе по величине</b> число. Для этого примера ответ 7 (а не 9: девятка повторяется, но это одно и то же значение).</p>
+<textarea name="B2" class="mono" data-label="B2"></textarea>
+<h3>B3 <span class="star">★</span>. Для тех, кто знает Python</h3>
+<p>а) Что выведет программа?</p>
+<pre>a = [3, 8, 1, 8]
+m = a[0]
+for x in a:
+    if x &gt; m:
+        m = x
+print(m, a.count(8))</pre>
+<div class="row"><label>Ответ: <input type="text" class="short" name="B3a" data-label="B3а"></label></div>
+<p>б) Программа должна напечатать сумму чисел от 1 до 4, то есть 10, но печатает другое. Что она печатает и как исправить?</p>
+<pre>total = 0
+for i in range(1, 5):
+    total = i
+print(total)</pre>
+<div class="row"><label>Печатает: <input type="text" class="short" name="B3b_prints" data-label="B3б: печатает"></label>
+<label>Исправление: <input type="text" class="mid" name="B3b_fix" data-label="B3б: исправление"></label></div>
+
+<h2>Блок C. Данные</h2>
+<h3>C1. Из описания в таблицы</h3>
+<p>Школьный библиотекарь просит программу. Вот его слова:</p>
+<blockquote>«Мне нужно хранить книги: название, автор, год, сколько экземпляров есть. Хранить читателей: фамилия, имя, класс. И записывать, кто какую книгу взял, когда взял и до какого числа должен вернуть. Главное, чтобы я быстро видел, кто задерживает книги».</blockquote>
+<p>Придумай, какие таблицы нужны программе, какие столбцы будут в каждой и как таблицы связаны между собой. Запиши в любом удобном виде, например: <code>Таблица «Книги»: id, название, …</code></p>
+<textarea name="C1" class="mono" data-label="C1"></textarea>
+
+<h3>C2. Прочитай таблицу</h3>
+<p>Заказы школьного магазина канцтоваров. Сегодня <b>15 сентября</b>.</p>
+<table>
+<tr><th class="c">№</th><th>Клиент</th><th>Товар</th><th class="c">Кол-во</th><th class="c">Цена за шт., ₽</th><th class="c">Дата заказа</th><th class="c">Срок доставки</th><th>Статус</th></tr>
+<tr><td class="c">1</td><td>Орлова</td><td>Тетрадь</td><td class="c">10</td><td class="c">40</td><td class="c">01.09</td><td class="c">05.09</td><td>доставлен</td></tr>
+<tr><td class="c">2</td><td>Ким</td><td>Ручка</td><td class="c">5</td><td class="c">30</td><td class="c">02.09</td><td class="c">06.09</td><td>доставлен</td></tr>
+<tr><td class="c">3</td><td>Орлова</td><td>Ручка</td><td class="c">20</td><td class="c">30</td><td class="c">03.09</td><td class="c">08.09</td><td>доставлен</td></tr>
+<tr><td class="c">4</td><td>Смирнов</td><td>Рюкзак</td><td class="c">1</td><td class="c">2500</td><td class="c">03.09</td><td class="c">10.09</td><td>доставлен</td></tr>
+<tr><td class="c">5</td><td>Ким</td><td>Тетрадь</td><td class="c">30</td><td class="c">40</td><td class="c">05.09</td><td class="c">09.09</td><td>доставлен</td></tr>
+<tr><td class="c">6</td><td>Ли</td><td>Пенал</td><td class="c">2</td><td class="c">350</td><td class="c">06.09</td><td class="c">12.09</td><td>в пути</td></tr>
+<tr><td class="c">7</td><td>Смирнов</td><td>Тетрадь</td><td class="c">15</td><td class="c">40</td><td class="c">08.09</td><td class="c">11.09</td><td>доставлен</td></tr>
+<tr><td class="c">8</td><td>Орлова</td><td>Пенал</td><td class="c">3</td><td class="c">350</td><td class="c">09.09</td><td class="c">14.09</td><td>доставлен</td></tr>
+<tr><td class="c">9</td><td>Ким</td><td>Рюкзак</td><td class="c">1</td><td class="c">2500</td><td class="c">10.09</td><td class="c">17.09</td><td>в пути</td></tr>
+<tr><td class="c">10</td><td>Ли</td><td>Ручка</td><td class="c">−4</td><td class="c">30</td><td class="c">11.09</td><td class="c">16.09</td><td>в пути</td></tr>
+<tr><td class="c">11</td><td>Смирнов</td><td>Ручка</td><td class="c">10</td><td class="c">30</td><td class="c">12.09</td><td class="c">10.09</td><td>в пути</td></tr>
+<tr><td class="c">12</td><td>Ли</td><td>Тетрадь</td><td class="c">25</td><td class="c">40</td><td class="c">13.09</td><td class="c">18.09</td><td>в пути</td></tr>
+</table>
+<div class="row"><label>а) Какой клиент потратил больше всех денег (сумма «кол-во × цена» по всем его заказам)? Клиент: <input type="text" class="short" name="C2a_client" data-label="C2а: клиент"></label>
+<label>Сумма: <input type="text" class="short" name="C2a_sum" data-label="C2а: сумма"> ₽</label></div>
+<div class="row"><label>б) Какие заказы просрочены: срок доставки прошёл, а статус всё ещё «в пути»? Номера: <input type="text" class="short" name="C2b" data-label="C2б"></label></div>
+<div class="row"><label>в) В таблице есть строки с ошибками в данных. Какие и почему? <input type="text" name="C2c" data-label="C2в"></label></div>
+
+<h3>C3. Обучи правило</h3>
+<p>Вот сообщения, которые уже разметил человек:</p>
+<table>
+<tr><th class="c">№</th><th>Сообщение</th><th class="c">Метка</th></tr>
+<tr><td class="c">1</td><td>Выиграй iPhone! Перейди по ссылке прямо сейчас!!!</td><td class="c">спам</td></tr>
+<tr><td class="c">2</td><td>Привет, завтра контрольная по алгебре, не забудь</td><td class="c">не спам</td></tr>
+<tr><td class="c">3</td><td>Ваш аккаунт заблокирован. Срочно введите пароль по ссылке</td><td class="c">спам</td></tr>
+<tr><td class="c">4</td><td>Мам, я после кружка, буду в 18:00</td><td class="c">не спам</td></tr>
+<tr><td class="c">5</td><td>Скидка 90% только сегодня! Жми!!!</td><td class="c">спам</td></tr>
+<tr><td class="c">6</td><td>Скинь, пожалуйста, домашку по физике</td><td class="c">не спам</td></tr>
+<tr><td class="c">7</td><td>Поздравляем, вы победитель лотереи! Заберите приз по ссылке</td><td class="c">спам</td></tr>
+<tr><td class="c">8</td><td>Встречаемся у школы в 8:30, как договаривались</td><td class="c">не спам</td></tr>
+</table>
+<div class="q"><div class="t">а) Сформулируй правило (или несколько признаков), по которому программа могла бы отличать спам от не спама:</div><textarea name="C3a" data-label="C3а: правило" style="min-height:70px"></textarea></div>
+<p>б) Примени своё правило к новым сообщениям:</p>
+<table>
+<tr><th>Сообщение</th><th class="c">Твоя метка</th></tr>
+<tr><td>Срочно! Перейди по ссылке, чтобы получить бесплатный подарок!</td><td class="c"><select name="C3b1" data-label="C3б: сообщение 1"><option value=""></option><option>спам</option><option>не спам</option></select></td></tr>
+<tr><td>Кинь ссылку на презентацию по биологии, пожалуйста</td><td class="c"><select name="C3b2" data-label="C3б: сообщение 2"><option value=""></option><option>спам</option><option>не спам</option></select></td></tr>
+</table>
+<div class="row"><label>в) Придумай сообщение, на котором твоё правило ошибётся: <input type="text" name="C3c" data-label="C3в"></label></div>
+
+<h2>Блок D. Проект и исследование</h2>
+<h3>D1. Очередь в столовой</h3>
+<p>На большой перемене в школьной столовой очередь, и многие не успевают поесть. Предложи, как это можно улучшить с помощью программы, приложения или данных. Ответь по пунктам:</p>
+<ol><li>Что именно ты предлагаешь сделать?</li><li>Какие данные нужно собрать, чтобы понять причину очереди?</li><li>Как проверить через месяц, что стало лучше?</li></ol>
+<textarea name="D1" class="big" data-label="D1"></textarea>
+<h3>D2. Оцени</h3>
+<p>Сколько сообщений в день отправляют в чате твоего класса? Точного ответа никто не знает: важно, как ты рассуждаешь. Запиши, из чего складывается оценка, и итоговое число.</p>
+<textarea name="D2" data-label="D2"></textarea>
+
+<h2>Блок E. Интерфейс</h2>
+<p>Придумай окно программы для библиотекаря из задания C1: форма «Выдать книгу» и рядом список выданных книг с должниками. Опиши окно текстом: какие поля, кнопки и списки есть и где они расположены (можно схематично, символами). Затем напиши <b>три</b> решения: почему элемент расположен именно так или почему он вообще нужен.</p>
+<textarea name="E" class="big" data-label="E"></textarea>
+
+<h2>Блок F (по желанию). На компьютере</h2>
+<p>Если осталось время, скачай файлы и поработай с ними на компьютере:</p>
+<ul>
+<li><a href="practice/bug.py" download>bug.py</a> — программа с тремя ошибками. Запусти, найди и исправь их, чтобы она печатала правильный результат. Вставь исправленный код в поле ниже.</li>
+<li><a href="practice/orders.csv" download>orders.csv</a> и <a href="practice/task.txt" download>task.txt</a> — таблица заказов и два вопроса к ней. Ответить можно любым способом: Python, Excel, вручную.</li>
+</ul>
+<div class="q"><div class="t">Ответы на вопросы из task.txt и исправленный код bug.py:</div><textarea name="F" class="mono big" data-label="F"></textarea></div>
+
+<p>Спасибо за работу! Нажми «Отправить ответы».</p>
+<pre id="preview" hidden></pre>
+<div class="savebar">
+<button type="button" id="submit-btn" class="primary">Отправить ответы</button>
+<button type="button" id="save-btn">Сохранить файлом</button>
+<button type="button" id="preview-btn">Показать мои ответы</button>
+<span id="saved-msg"></span><span id="mode" class="muted"></span>
+</div>
+</form>
+<script src="_config.js"></script>
+<script src="_common.js"></script>
+</body>
+</html>
