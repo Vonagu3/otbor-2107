@@ -81,6 +81,7 @@
     try {
       const r = await rest(TABLE + '?select=*&order=created_at.desc&limit=5000');
       rows = await r.json();
+      rows.forEach(x => { x.ts = x.updated_at || x.created_at; });
       $('status').textContent = 'Обновлено ' + new Date().toLocaleTimeString('ru-RU');
       render();
     } catch (e) { if (e.message !== '401') $('status').textContent = 'Ошибка загрузки: ' + e.message; }
@@ -127,7 +128,7 @@
         const first = ['rank_business:бизнес', 'rank_ai:ИИ', 'rank_data:данные', 'rank_research:исследования'].filter(x => d[x.split(':')[0]] === '1').map(x => x.split(':')[1]).join('/');
         cells = `<td class="c">${esc(d.hours)}</td><td class="c">${esc(d.trips)}</td><td class="c">${esc(d.self_code)}</td><td class="c">${esc(d.self_data)}</td><td class="c">${esc(d.self_speak)}</td><td>${esc(roles)}</td><td>${esc(first)}</td>`;
       }
-      html += `<tr data-id="${r.id}" class="${r.id === selectedId ? 'sel' : ''}"><td><b>${esc(r.fio)}</b></td><td>${esc(r.klass)}</td><td class="muted">${fmt(r.created_at)}</td>${cells}<td><button class="mini" data-del="${r.id}" title="Удалить запись">✕</button></td></tr>`;
+      html += `<tr data-id="${r.id}" class="${r.id === selectedId ? 'sel' : ''}"><td><b>${esc(r.fio)}</b></td><td>${esc(r.klass)}</td><td class="muted">${fmt(r.ts)}${(r.submissions || 1) > 1 ? ' <span class="muted">×' + r.submissions + '</span>' : ''}</td>${cells}<td><button class="mini" data-del="${r.id}" title="Удалить запись">✕</button></td></tr>`;
     }
     if (!list.length) html += '<tr><td colspan="11" class="muted">Пока нет ответов</td></tr>';
     $('grid').innerHTML = html;
@@ -135,7 +136,7 @@
     $('grid').querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async e => {
       e.stopPropagation();
       const r = rows.find(x => x.id === +b.dataset.del);
-      if (!confirm(`Удалить запись «${r.fio}» (${r.form}, ${fmt(r.created_at)})? Это нельзя отменить.`)) return;
+      if (!confirm(`Удалить запись «${r.fio}» (${r.form}, ${fmt(r.ts)})? Это нельзя отменить.`)) return;
       try { await rest(TABLE + '?id=eq.' + r.id, { method: 'DELETE' }); rows = rows.filter(x => x.id !== r.id); if (selectedId === r.id) selectedId = null; render(); showDetail(); }
       catch (err) { alert('Не удалось удалить: ' + err.message); }
     }));
@@ -146,7 +147,7 @@
     if (!r) { box.hidden = true; return; }
     box.hidden = false;
     const d = r.data || {};
-    let h = `<div class="dhead"><div><b>${esc(r.fio)}</b> · ${esc(r.klass)} · ${r.form} · ${fmt(r.created_at)}</div><button class="mini" id="close-detail">Закрыть</button></div>`;
+    let h = `<div class="dhead"><div><b>${esc(r.fio)}</b> · ${esc(r.klass)} · ${r.form} · ${fmt(r.ts)}</div><button class="mini" id="close-detail">Закрыть</button></div>`;
     if (r.form === 'срез') {
       h += '<div class="checks">' + check(d).map(([k, ok]) => `<span class="${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'} ${esc(k)}</span>`).join('') + '</div>';
     }
@@ -172,7 +173,7 @@
     const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
     const lines = [cols.concat(extra).map(q).join(';')];
     for (const r of latest) {
-      const d = Object.assign({}, r.data, { fio: r.fio, klass: r.klass, _отправлено: fmt(r.created_at) });
+      const d = Object.assign({}, r.data, { fio: r.fio, klass: r.klass, _отправлено: fmt(r.ts) });
       const vals = cols.map(c => d[c]);
       if (kind === 'срез') { const ch = check(r.data || {}); vals.push(...ch.map(x => x[1] ? '✓' : '✗'), ch.filter(x => x[1]).length); }
       lines.push(vals.map(q).join(';'));

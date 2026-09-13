@@ -90,20 +90,23 @@
     const btn = document.getElementById('submit-btn');
     btn.disabled = true; msg.textContent = 'Отправляем…';
     try {
-      const url = CFG.supabaseUrl.replace(/\/+$/, '') + '/rest/v1/' + (CFG.table || 'answers');
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'apikey': CFG.supabaseAnonKey,
-          'Authorization': 'Bearer ' + CFG.supabaseAnonKey,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ form: KIND, fio: data.fio, klass: data.klass || '', client_id: clientId, data: data, text: readable(data, false) })
+      const base = CFG.supabaseUrl.replace(/\/+$/, '') + '/rest/v1/';
+      const headers = { 'apikey': CFG.supabaseAnonKey, 'Authorization': 'Bearer ' + CFG.supabaseAnonKey, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
+      // Основной путь: функция submit_answer обновляет запись при повторной отправке.
+      let res = await fetch(base + 'rpc/submit_answer', {
+        method: 'POST', headers,
+        body: JSON.stringify({ p_form: KIND, p_fio: data.fio, p_klass: data.klass || '', p_client_id: clientId, p_data: data, p_text: readable(data, false) })
       });
+      if (res.status === 404) {
+        // Функция ещё не создана в базе: обычная вставка.
+        res = await fetch(base + (CFG.table || 'answers'), {
+          method: 'POST', headers,
+          body: JSON.stringify({ form: KIND, fio: data.fio, klass: data.klass || '', client_id: clientId, data: data, text: readable(data, false) })
+        });
+      }
       if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + (await res.text()).slice(0, 200));
       const t = new Date().toLocaleTimeString('ru-RU');
-      msg.innerHTML = 'Ответы отправлены ✓ ' + t + '. Если что-то исправишь, отправь ещё раз.' + NEXT;
+      msg.innerHTML = 'Ответы отправлены ✓ ' + t + '. Если что-то исправишь, отправь ещё раз: запись обновится.' + NEXT;
       try { localStorage.setItem(KEY + '_sent', t); } catch (e) {}
     } catch (e) {
       msg.textContent = 'Не удалось отправить (' + e.message + '). Позови учителя. Пока сохраняем файлом.';
