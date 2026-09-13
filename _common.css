@@ -28,8 +28,33 @@
   --mono: "JetBrains Mono", Menlo, Consolas, monospace;
   color-scheme: light;
 }
+:root[data-theme="dark"] {
+    --bg: #0b0f1a;
+    --bg-2: #0e1322;
+    --surface: #121a2b;
+    --surface-2: #171f33;
+    --ink: #e8ecf5;
+    --ink-2: #c3cad9;
+    --muted: #8b95a9;
+    --line: #22304a;
+    --line-2: #34405c;
+    --accent: #8b8bff;
+    --accent-2: #a78bfa;
+    --accent-3: #22d3ee;
+    --accent-ink: #0b0f1a;
+    --accent-soft: #1d2140;
+    --ok: #4ade80;
+    --ok-soft: #10301f;
+    --warn-soft: #2b2610;
+    --warn-line: #5a4d1a;
+    --code-bg: #0a1020;
+    --code-ink: #dbe3f0;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px -14px rgba(0, 0, 0, .6);
+    --shadow-lg: 0 20px 50px -20px rgba(139, 139, 255, .35);
+    color-scheme: dark;
+}
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0b0f1a;
     --bg-2: #0e1322;
     --surface: #121a2b;
@@ -321,3 +346,9 @@ input[type=checkbox], input[type=radio] { width: 20px; height: 20px; accent-colo
   background: var(--surface-2); color: var(--ink); }
 .mini { font: inherit; font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 10px; border: 1.5px solid var(--line-2); background: var(--surface); color: var(--ink); cursor: pointer; }
 .mini:hover { border-color: var(--accent); }
+
+/* ---------- Кнопка темы ---------- */
+.theme-btn { position: fixed; top: 14px; right: 16px; z-index: 50; width: 42px; height: 42px; border-radius: 50%; font-size: 18px; line-height: 1;
+  border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow); cursor: pointer; display: grid; place-items: center; }
+.theme-btn:hover { border-color: var(--accent); }
