@@ -69,6 +69,40 @@
     return r;
   }
 
+  // ---------- фамилии: только в браузере педагога ----------
+  let names = {};
+  try { names = JSON.parse(sessionStorage.getItem('otbor2107_names') || '{}'); } catch (e) {}
+  const nameOf = code => names[String(code || '').toUpperCase()] || '';
+  function parseNames(text) {
+    const lines = text.replace(/^\ufeff/, '').split(/\r?\n/).filter(l => l.trim());
+    const delim = (text.match(/;/g) || []).length >= (text.match(/,/g) || []).length ? ';' : ',';
+    const out = {};
+    for (const line of lines.slice(1)) {
+      const cells = []; let cur = '', inq = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') { if (inq && line[i + 1] === '"') { cur += '"'; i++; } else inq = !inq; }
+        else if (ch === delim && !inq) { cells.push(cur); cur = ''; }
+        else cur += ch;
+      }
+      cells.push(cur);
+      const code = (cells[0] || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+      const name = (cells[2] || '').trim();
+      if (code && name) out[code] = name;
+    }
+    return out;
+  }
+  $('names-btn').addEventListener('click', () => $('names-file').click());
+  $('names-file').addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    names = parseNames(await f.text());
+    try { sessionStorage.setItem('otbor2107_names', JSON.stringify(names)); } catch (er) {}
+    $('names-btn').textContent = 'Фамилии: ' + Object.keys(names).length;
+    e.target.value = '';
+    render(); showDetail();
+  });
+  if (Object.keys(names).length) $('names-btn').textContent = 'Фамилии: ' + Object.keys(names).length;
+
   // ---------- данные ----------
   let rows = [], codes = [];
   let tab = 'срез';
@@ -92,7 +126,7 @@
     let list = rows.filter(r => r.form === tab);
     if (!showAll) { const seen = new Set(); list = list.filter(r => { if (seen.has(r.code)) return false; seen.add(r.code); return true; }); }
     const q = norm($('search').value);
-    if (q) list = list.filter(r => norm(r.code + ' ' + r.klass).includes(q));
+    if (q) list = list.filter(r => norm(r.code + ' ' + r.klass + ' ' + nameOf(r.code)).includes(q));
     return list;
   }
   function render() {
@@ -108,8 +142,8 @@
     if (tab === 'коды') { renderCodes(qSet, sSet); return; }
     const list = visible();
     const head = tab === 'срез'
-      ? '<th>Код</th><th>Класс</th><th>Отправлено</th><th class="c">Авто ✓ из 21</th><th class="c">Заполнено</th><th></th>'
-      : '<th>Код</th><th>Класс</th><th>Отправлено</th><th class="c">Часов</th><th class="c">Выезды</th><th class="c">Код</th><th class="c">Данные</th><th class="c">Выступаю</th><th>Роли</th><th>№1</th><th></th>';
+      ? '<th>Код</th><th>Ученик</th><th>Класс</th><th>Отправлено</th><th class="c">Авто ✓ из 21</th><th class="c">Заполнено</th><th></th>'
+      : '<th>Код</th><th>Ученик</th><th>Класс</th><th>Отправлено</th><th class="c">Часов</th><th class="c">Выезды</th><th class="c">Код</th><th class="c">Данные</th><th class="c">Выступаю</th><th>Роли</th><th>№1</th><th></th>';
     let html = '<tr>' + head + '</tr>';
     for (const r of list) {
       const d = r.data || {};
@@ -126,9 +160,9 @@
         cells = `<td class="c">${esc(d.hours)}</td><td class="c">${esc(d.trips)}</td><td class="c">${esc(d.self_code)}</td><td class="c">${esc(d.self_data)}</td><td class="c">${esc(d.self_speak)}</td><td>${esc(roles)}</td><td>${esc(first)}</td>`;
       }
       const times = fmt(r.ts) + ((r.submissions || 1) > 1 ? ' <span class="muted">×' + r.submissions + '</span>' : '');
-      html += `<tr data-id="${r.id}" class="${r.id === selectedId ? 'sel' : ''}"><td><b class="mono">${esc(r.code)}</b></td><td>${esc(r.klass)}</td><td class="muted">${times}</td>${cells}<td><button class="mini" data-del="${r.id}" title="Удалить запись">✕</button></td></tr>`;
+      html += `<tr data-id="${r.id}" class="${r.id === selectedId ? 'sel' : ''}"><td><b class="mono">${esc(r.code)}</b></td><td>${esc(nameOf(r.code)) || '<span class="muted">—</span>'}</td><td>${esc(r.klass)}</td><td class="muted">${times}</td>${cells}<td><button class="mini" data-del="${r.id}" title="Удалить запись">✕</button></td></tr>`;
     }
-    if (!list.length) html += '<tr><td colspan="11" class="muted">Пока нет ответов</td></tr>';
+    if (!list.length) html += '<tr><td colspan="12" class="muted">Пока нет ответов</td></tr>';
     $('grid').innerHTML = html;
     $('grid').querySelectorAll('tr[data-id]').forEach(tr => tr.addEventListener('click', e => { if (e.target.dataset.del) return; selectedId = +tr.dataset.id; render(); showDetail(); }));
     $('grid').querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async e => {
@@ -145,7 +179,7 @@
     if (!r) { box.hidden = true; return; }
     box.hidden = false;
     const d = r.data || {};
-    let h = `<div class="dhead"><div><b class="mono">${esc(r.code)}</b> · ${esc(r.klass)} · ${esc(r.form)} · ${fmt(r.ts)}</div><button class="mini" id="close-detail">Закрыть</button></div>`;
+    let h = `<div class="dhead"><div><b class="mono">${esc(r.code)}</b>${nameOf(r.code) ? ' · <b>' + esc(nameOf(r.code)) + '</b>' : ''} · ${esc(r.klass)} · ${esc(r.form)} · ${fmt(r.ts)}</div><button class="mini" id="close-detail">Закрыть</button></div>`;
     if (r.form === 'срез') h += '<div class="checks">' + check(d).map(([k, ok]) => `<span class="${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'} ${esc(k)}</span>`).join('') + '</div>';
     h += '<dl>';
     for (const k of ORDER[r.form]) {
@@ -164,12 +198,12 @@
   function makeCode() { const a = new Uint32Array(5); crypto.getRandomValues(a); return [...a].map(x => ALPHABET[x % ALPHABET.length]).join(''); }
   function renderCodes(qSet, sSet) {
     const q = norm($('search').value);
-    const list = codes.filter(c => !q || norm(c.code + ' ' + (c.klass || '')).includes(q));
-    let html = '<tr><th>Код</th><th>Класс</th><th class="c">Опросник</th><th class="c">Срез</th><th>Создан</th><th></th></tr>';
+    const list = codes.filter(c => !q || norm(c.code + ' ' + (c.klass || '') + ' ' + nameOf(c.code)).includes(q));
+    let html = '<tr><th>Код</th><th>Ученик</th><th>Класс</th><th class="c">Опросник</th><th class="c">Срез</th><th>Создан</th><th></th></tr>';
     for (const c of list) {
-      html += `<tr><td><b class="mono">${esc(c.code)}</b></td><td>${esc(c.klass || '')}</td><td class="c">${qSet.has(c.code) ? '✓' : '<span class="muted">—</span>'}</td><td class="c">${sSet.has(c.code) ? '✓' : '<span class="muted">—</span>'}</td><td class="muted">${fmt(c.created_at)}</td><td><button class="mini" data-delcode="${esc(c.code)}" title="Удалить код">✕</button></td></tr>`;
+      html += `<tr><td><b class="mono">${esc(c.code)}</b></td><td>${esc(nameOf(c.code)) || '<span class="muted">—</span>'}</td><td>${esc(c.klass || '')}</td><td class="c">${qSet.has(c.code) ? '✓' : '<span class="muted">—</span>'}</td><td class="c">${sSet.has(c.code) ? '✓' : '<span class="muted">—</span>'}</td><td class="muted">${fmt(c.created_at)}</td><td><button class="mini" data-delcode="${esc(c.code)}" title="Удалить код">✕</button></td></tr>`;
     }
-    if (!list.length) html += '<tr><td colspan="6" class="muted">Кодов пока нет. Сгенерируйте их выше.</td></tr>';
+    if (!list.length) html += '<tr><td colspan="7" class="muted">Кодов пока нет. Сгенерируйте их выше.</td></tr>';
     $('codes-grid').innerHTML = html;
     $('codes-grid').querySelectorAll('[data-delcode]').forEach(b => b.addEventListener('click', async () => {
       const code = b.dataset.delcode;
@@ -193,7 +227,7 @@
   });
   $('codes-csv').addEventListener('click', () => {
     const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-    const lines = [['код', 'класс', 'фамилия имя'].map(q).join(';')].concat(codes.map(c => [c.code, c.klass || '', ''].map(q).join(';')));
+    const lines = [['код', 'класс', 'фамилия имя'].map(q).join(';')].concat(codes.map(c => [c.code, c.klass || '', nameOf(c.code)].map(q).join(';')));
     const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'коды_имена.csv'; document.body.appendChild(a); a.click(); a.remove();
   });
@@ -216,12 +250,12 @@
     const list = rows.filter(r => r.form === kind);
     const seen = new Set(); const latest = [];
     for (const r of list) { if (seen.has(r.code)) continue; seen.add(r.code); latest.push(r); }
-    const cols = ['code', 'klass', '_отправлено', ...ORDER[kind].filter(k => k !== 'code' && k !== 'klass')];
+    const cols = ['code', 'фамилия', 'klass', '_отправлено', ...ORDER[kind].filter(k => k !== 'code' && k !== 'klass')];
     const extra = kind === 'срез' ? check({}).map(x => 'авто: ' + x[0]).concat(['авто: верных из 21']) : [];
     const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
     const lines = [cols.concat(extra).map(q).join(';')];
     for (const r of latest) {
-      const d = Object.assign({}, r.data, { code: r.code, klass: r.klass, _отправлено: fmt(r.ts) });
+      const d = Object.assign({}, r.data, { code: r.code, фамилия: nameOf(r.code), klass: r.klass, _отправлено: fmt(r.ts) });
       const vals = cols.map(c => d[c]);
       if (kind === 'срез') { const ch = check(r.data || {}); vals.push(...ch.map(x => x[1] ? '✓' : '✗'), ch.filter(x => x[1]).length); }
       lines.push(vals.map(q).join(';'));
