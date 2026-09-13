@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Панель педагога · отбор 2107</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_common.css">
+<style>
+  main { max-width: 1180px; }
+  body { padding-bottom: 60px; }
+  .login-card { max-width: 420px; margin: 60px auto; }
+  .login-card input { width: 100%; margin: 6px 0 14px; }
+  .login-card .btnrow { display: flex; align-items: center; gap: 12px; }
+  .btn-solid { font: inherit; font-weight: 700; padding: 11px 18px; border-radius: 13px; border: 0; cursor: pointer; color: var(--accent-ink); background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+  .btn-ghost { font: inherit; font-weight: 700; padding: 9px 14px; border-radius: 12px; border: 1.5px solid var(--line-2); background: var(--surface); color: var(--ink); cursor: pointer; }
+  .btn-ghost:hover { border-color: var(--accent); }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0; }
+  .toolbar .spacer { flex: 1; }
+  .tabs { display: inline-flex; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+  .tabs button { font: inherit; font-weight: 700; border: 0; background: transparent; color: var(--muted); padding: 7px 16px; border-radius: 999px; cursor: pointer; }
+  .tabs button.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 14px 0; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .stat b { display: block; font-size: 26px; letter-spacing: -.02em; }
+  .stat span { color: var(--muted); font-size: 13px; }
+  #grid tr[data-id] { cursor: pointer; }
+  #grid tr.sel td { background: var(--accent-soft); }
+  .score { display: inline-block; min-width: 34px; padding: 3px 8px; border-radius: 8px; font-weight: 800; background: var(--surface-2); }
+  .score.mid { background: var(--warn-soft); }
+  .score.good { background: var(--ok-soft); color: var(--ok); }
+  .mini { font: inherit; font-size: 12px; font-weight: 700; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--surface); color: var(--muted); cursor: pointer; }
+  .mini:hover { border-color: #e11d48; color: #e11d48; }
+  #detail { margin-top: 18px; }
+  .dhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .checks { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
+  .checks span { font-family: var(--mono); font-size: 12px; padding: 4px 8px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); }
+  .checks .ok { color: var(--ok); background: var(--ok-soft); }
+  .checks .no { color: #e11d48; }
+  dl { display: grid; grid-template-columns: 220px 1fr; gap: 6px 16px; margin: 0; }
+  dt { color: var(--muted); font-size: 13.5px; padding-top: 2px; }
+  dd { margin: 0; white-space: pre-wrap; font-size: 14.5px; }
+  #status { color: var(--muted); font-size: 13px; }
+  .tablewrap { overflow-x: auto; }
+  @media (max-width: 700px) { dl { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+<div id="login" hidden>
+  <section class="card-static login-card">
+    <span class="eyebrow">Только для педагога</span>
+    <h1 style="font-size:28px">Панель ответов</h1>
+    <p class="sub">Вход по учётной записи Supabase.</p>
+    <form id="login-form">
+      <label>Email<input type="email" id="email" autocomplete="username" required></label>
+      <label>Пароль<input type="password" id="password" autocomplete="current-password" required></label>
+      <div class="btnrow"><button class="btn-solid" type="submit">Войти</button><span id="login-msg" class="muted"></span></div>
+    </form>
+  </section>
+</div>
+
+<div id="app" hidden>
+  <div class="hero" style="padding-bottom:0">
+    <span class="eyebrow">Школа № 2107 · панель педагога</span>
+    <h1 style="font-size:32px">Ответы учеников</h1>
+    <p class="sub">Обновляется автоматически каждые 30 секунд. Щёлкните по строке, чтобы открыть работу целиком.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="stat-total">0</b><span>учеников всего</span></div>
+    <div class="stat"><b id="stat-q">0</b><span>сдали опросник</span></div>
+    <div class="stat"><b id="stat-s">0</b><span>сдали срез</span></div>
+    <div class="stat"><b id="stat-both">0</b><span>сдали и то и другое</span></div>
+  </div>
+  <div class="toolbar">
+    <div class="tabs"><button id="tab-срез" class="active">Срез</button><button id="tab-опросник">Опросник</button></div>
+    <input type="text" id="search" placeholder="Поиск по фамилии или классу" style="max-width:280px">
+    <label class="muted"><input type="checkbox" id="showall"> все версии</label>
+    <span class="spacer"></span>
+    <span id="status"></span>
+    <button class="btn-ghost" id="refresh">Обновить</button>
+    <button class="btn-ghost" id="csv-срез">CSV срез</button>
+    <button class="btn-ghost" id="csv-опросник">CSV опросник</button>
+    <span class="muted" id="who"></span>
+    <button class="btn-ghost" id="logout">Выйти</button>
+  </div>
+  <section class="card-static tablewrap" style="padding:8px 10px"><table id="grid"></table></section>
+  <section class="card-static" id="detail" hidden></section>
+</div>
+</main>
+<script src="_config.js"></script>
+<script src="teacher.js"></script>
+</body>
+</html>
